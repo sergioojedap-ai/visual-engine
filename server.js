@@ -18,7 +18,7 @@ app.set('views', path.join(__dirname, 'views'));
  ****************************************************/
 
 app.get('/', (req, res) => {
-  res.redirect('/test-slide15');
+  res.redirect('/test-slide17');
 });
 
 app.get('/health', (req, res) => {
@@ -217,6 +217,53 @@ app.post('/render/slide15', async (req, res) => {
 });
 
 /****************************************************
+ * SLIDE 17
+ ****************************************************/
+
+app.get('/test-slide17', async (req, res) => {
+  try {
+    const sample = getSampleSlide17();
+    res.render('slide17', sample);
+  } catch (error) {
+    console.error('Error en /test-slide17:', error);
+    res.status(500).send('Error en /test-slide17: ' + error);
+  }
+});
+
+app.get('/test-slide17-png', async (req, res) => {
+  try {
+    const sample = getSampleSlide17();
+    const html = await renderEjsToString('slide17', sample);
+    const imageBuffer = await htmlToPng(html);
+
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Content-Length', imageBuffer.length);
+    res.end(imageBuffer);
+  } catch (error) {
+    console.error('Error generando PNG slide 17:', error);
+    res.status(500).send('Error generando PNG slide 17: ' + error);
+  }
+});
+
+app.post('/render/slide17', async (req, res) => {
+  try {
+    const data = normalizeSlide17Data(req.body || {});
+    const html = await renderEjsToString('slide17', data);
+    const imageBuffer = await htmlToPng(html);
+
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Content-Length', imageBuffer.length);
+    res.end(imageBuffer);
+  } catch (error) {
+    console.error('Error renderizando slide17:', error);
+    res.status(500).json({
+      ok: false,
+      error: String(error)
+    });
+  }
+});
+
+/****************************************************
  * DATOS DE PRUEBA - SLIDE 10
  ****************************************************/
 
@@ -338,9 +385,9 @@ function getSampleSlide14() {
     ],
 
     insights: [
-      'Mantenimiento Programado DAT representa la principal causa de requerimientos del periodo.',
+      'Mantenimiento Programado DAT representa la principal causa de requerimientos.',
       'El Top 3 concentra más del 78% del total registrado.',
-      'La priorización de las causas principales permite enfocar recursos operativos.'
+      'La priorización de causas principales permite enfocar recursos operativos.'
     ],
 
     insight:
@@ -382,6 +429,41 @@ function getSampleSlide15() {
 
     insight:
       'La mayor incidencia se concentra en Sin señal de comunicación.'
+  });
+}
+
+/****************************************************
+ * DATOS DE PRUEBA - SLIDE 17
+ ****************************************************/
+
+function getSampleSlide17() {
+  return normalizeSlide17Data({
+    titulo: 'Yauricocha - Abril 2026 - Top Suministros General',
+    periodo: 'Abril 2026',
+    logoText: 'COMM',
+
+    totalSuministros: 318,
+
+    items: [
+      { nombre: 'Cable UTP', requerimientos: 80, incidentes: 30, cantidad: 110 },
+      { nombre: 'Conector RJ45', requerimientos: 45, incidentes: 22, cantidad: 67 },
+      { nombre: 'Cintillos', requerimientos: 38, incidentes: 16, cantidad: 54 },
+      { nombre: 'Canaleta', requerimientos: 24, incidentes: 10, cantidad: 34 },
+      { nombre: 'Cinta aislante', requerimientos: 18, incidentes: 8, cantidad: 26 },
+      { nombre: 'Patch cord', requerimientos: 12, incidentes: 4, cantidad: 16 },
+      { nombre: 'Fuente 12V', requerimientos: 4, incidentes: 3, cantidad: 7 },
+      { nombre: 'Balun CCTV', requerimientos: 2, incidentes: 1, cantidad: 3 },
+      { nombre: 'Caja de paso', requerimientos: 1, incidentes: 0, cantidad: 1 }
+    ],
+
+    insights: [
+      'Cable UTP concentra el mayor consumo de suministros del periodo.',
+      'Los tres principales suministros explican la mayor parte del consumo total.',
+      'El control de materiales críticos permite mejorar la planificación operativa.'
+    ],
+
+    insight:
+      'El suministro de mayor uso corresponde a Cable UTP.'
   });
 }
 
@@ -639,9 +721,9 @@ function normalizeSlide14Data(body) {
     insights: Array.isArray(body.insights)
       ? body.insights
       : [
-          body.insight || 'Los principales requerimientos concentran oportunidades de mejora para priorizar recursos operativos.',
-          'La gestión del Top 10 permite enfocar acciones sobre las demandas más recurrentes.',
-          'El seguimiento mensual facilita controlar recurrencias y fortalecer la planificación del servicio.'
+          body.insight || 'Los principales requerimientos concentran oportunidades de mejora.',
+          'La gestión del Top 10 permite enfocar acciones sobre demandas recurrentes.',
+          'El seguimiento mensual facilita controlar recurrencias y fortalecer la planificación.'
         ]
   };
 }
@@ -713,8 +795,77 @@ function normalizeSlide15Data(body) {
       ? body.insights
       : [
           body.insight || 'Los principales incidentes concentran oportunidades de mejora operativa.',
-          'La gestión del Top 10 permite priorizar acciones sobre las fallas recurrentes.',
+          'La gestión del Top 10 permite priorizar acciones sobre fallas recurrentes.',
           'El seguimiento mensual facilita reducir tiempos y controlar recurrencias.'
+        ]
+  };
+}
+
+/****************************************************
+ * NORMALIZAR DATOS - SLIDE 17
+ ****************************************************/
+
+function normalizeSlide17Data(body) {
+  const rawItems = Array.isArray(body.items)
+    ? body.items
+    : Array.isArray(body.topSuministros)
+      ? body.topSuministros
+      : [];
+
+  let items = normalizeSuministroItems(rawItems);
+
+  const totalTop10 = items.reduce((acc, item) => acc + item.cantidad, 0);
+
+  const totalSuministros =
+    toNumber(body.totalSuministros ?? body.total ?? body.suministros ?? 0) ||
+    totalTop10;
+
+  items = items.map(item => ({
+    ...item,
+    porcentaje: item.porcentaje || calcPct(item.cantidad, totalSuministros)
+  }));
+
+  const top1 = items[0] || {
+    nombre: '-',
+    requerimientos: 0,
+    incidentes: 0,
+    cantidad: 0,
+    porcentaje: '0.00%'
+  };
+
+  const top2Cantidad = items.slice(0, 2).reduce((acc, item) => acc + item.cantidad, 0);
+  const top3Cantidad = items.slice(0, 3).reduce((acc, item) => acc + item.cantidad, 0);
+
+  return {
+    titulo:
+      body.titulo ||
+      `Yauricocha - ${body.periodo || 'Periodo'} - Top Suministros General`,
+
+    periodo: body.periodo || 'Periodo',
+    logoText: body.logoText || 'COMM',
+
+    totalSuministros,
+    totalTop10,
+
+    principalSuministro: body.principalSuministro || top1.nombre,
+    cantidadPrincipal: body.cantidadPrincipal || top1.cantidad,
+    pctPrincipal: body.pctPrincipal || top1.porcentaje,
+    pctTop2: body.pctTop2 || calcPct(top2Cantidad, totalSuministros),
+    pctTop3: body.pctTop3 || calcPct(top3Cantidad, totalSuministros),
+    pctTop10: body.pctTop10 || calcPct(totalTop10, totalSuministros),
+
+    items,
+
+    insight:
+      body.insight ||
+      `El suministro de mayor uso corresponde a ${top1.nombre}.`,
+
+    insights: Array.isArray(body.insights)
+      ? body.insights
+      : [
+          body.insight || 'Los principales suministros concentran la mayor demanda operativa.',
+          'La gestión del Top 10 permite controlar materiales críticos.',
+          'El seguimiento mensual fortalece la planificación de abastecimiento.'
         ]
   };
 }
@@ -746,6 +897,45 @@ function normalizeParetoItems(rawItems, type) {
         ).trim(),
         cantidad: toNumber(item.cantidad ?? item.total ?? item.valor ?? 0),
         tiempoHoras: toNumber(item.tiempoHoras ?? item.tiempo ?? item.horas ?? item.totalHoras ?? 0)
+      };
+    })
+    .filter(item => item.nombre && item.cantidad > 0)
+    .sort((a, b) => b.cantidad - a.cantidad)
+    .slice(0, 10);
+}
+
+function normalizeSuministroItems(rawItems) {
+  return rawItems
+    .filter(item => item && (item.nombre || item.descripcion || item.suministro || item.material || item[0]))
+    .map(item => {
+      if (Array.isArray(item)) {
+        const req = toNumber(item[1]);
+        const inc = toNumber(item[2]);
+        const total = toNumber(item[3]) || req + inc;
+
+        return {
+          nombre: String(item[0] || '').trim(),
+          requerimientos: req,
+          incidentes: inc,
+          cantidad: total
+        };
+      }
+
+      const req = toNumber(item.requerimientos ?? item.req ?? item.cantidadRequerimientos ?? 0);
+      const inc = toNumber(item.incidentes ?? item.inc ?? item.cantidadIncidentes ?? 0);
+      const total = toNumber(item.cantidad ?? item.total ?? item.valor ?? 0) || req + inc;
+
+      return {
+        nombre: String(
+          item.nombre ||
+          item.descripcion ||
+          item.suministro ||
+          item.material ||
+          ''
+        ).trim(),
+        requerimientos: req,
+        incidentes: inc,
+        cantidad: total
       };
     })
     .filter(item => item.nombre && item.cantidad > 0)
