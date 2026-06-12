@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Slide 10 Premium</title>
+  <link rel="stylesheet" href="/public/styles.css" />
+
+  <style>
+    .slide10-kpi-row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .slide10-content {
+      display: grid;
+      grid-template-columns: 1.45fr 0.55fr;
+      gap: 24px;
+      margin-top: 28px;
+    }
+
+    .chart-panel {
+      background: #ffffff;
+      border: 1px solid #d6e2f2;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(9, 45, 88, 0.08);
+      overflow: hidden;
+      min-height: 385px;
+    }
+
+    .chart-header {
+      background: linear-gradient(90deg, #0b3f9f 0%, #0b53d0 55%, #11b8c7 100%);
+      color: white;
+      font-size: 20px;
+      font-weight: 800;
+      padding: 16px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chart-subtitle {
+      font-size: 13px;
+      font-weight: 500;
+      opacity: 0.9;
+    }
+
+    .chart-body {
+      padding: 20px 26px 22px 26px;
+      height: 330px;
+    }
+
+    .side-panel {
+      background: #ffffff;
+      border: 1px solid #d6e2f2;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(9, 45, 88, 0.08);
+      overflow: hidden;
+    }
+
+    .side-header {
+      background: linear-gradient(90deg, #062a63 0%, #0b53d0 100%);
+      color: white;
+      font-size: 18px;
+      font-weight: 800;
+      padding: 16px 20px;
+    }
+
+    .side-body {
+      padding: 22px;
+    }
+
+    .mini-card {
+      border: 1px solid #d6e2f2;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+    }
+
+    .mini-title {
+      font-size: 13px;
+      color: #60718a;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .mini-value {
+      font-size: 30px;
+      color: #0b53d0;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .mini-desc {
+      font-size: 13px;
+      color: #21324e;
+      margin-top: 8px;
+      line-height: 1.35;
+    }
+
+    .slide10-insight-row {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: 90px 300px 2px 1fr;
+      align-items: center;
+      gap: 18px;
+      background: #ffffff;
+      border: 1px solid #cfe0f5;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(9, 45, 88, 0.08);
+      padding: 18px 22px;
+    }
+
+    .legend-svg-text {
+      font-size: 18px;
+      fill: #203250;
+      font-weight: 700;
+    }
+
+    .axis-text {
+      font-size: 15px;
+      fill: #60718a;
+      font-weight: 600;
+    }
+
+    .bar-label {
+      font-size: 13px;
+      fill: #0b2148;
+      font-weight: 700;
+    }
+
+    .line-label {
+      font-size: 13px;
+      fill: #ff6a00;
+      font-weight: 800;
+    }
+  </style>
+</head>
+
+<body>
+<%
+  const fallbackDaily = [
+    { dia: '01', atenciones: 4, horas: 18 },
+    { dia: '02', atenciones: 6, horas: 22 },
+    { dia: '03', atenciones: 5, horas: 20 },
+    { dia: '04', atenciones: 9, horas: 31 },
+    { dia: '05', atenciones: 7, horas: 26 },
+    { dia: '06', atenciones: 3, horas: 14 },
+    { dia: '07', atenciones: 8, horas: 29 },
+    { dia: '08', atenciones: 10, horas: 36 },
+    { dia: '09', atenciones: 6, horas: 24 },
+    { dia: '10', atenciones: 5, horas: 19 },
+    { dia: '11', atenciones: 11, horas: 39 },
+    { dia: '12', atenciones: 7, horas: 27 },
+    { dia: '13', atenciones: 4, horas: 16 },
+    { dia: '14', atenciones: 9, horas: 34 }
+  ];
+
+  const daily = typeof dias !== 'undefined' && Array.isArray(dias) && dias.length ? dias : fallbackDaily;
+
+  const maxAtenciones = Math.max(...daily.map(d => Number(d.atenciones) || 0), 1);
+  const maxHoras = Math.max(...daily.map(d => Number(d.horas) || 0), 1);
+
+  const chartW = 920;
+  const chartH = 260;
+  const baseY = 250;
+  const leftPad = 55;
+  const topPad = 25;
+  const usableW = chartW - leftPad - 25;
+  const usableH = 205;
+  const gap = usableW / daily.length;
+  const barW = Math.min(28, gap * 0.5);
+
+  function yAtenciones(v) {
+    return baseY - ((Number(v) || 0) / maxAtenciones) * usableH;
+  }
+
+  function yHoras(v) {
+    return baseY - ((Number(v) || 0) / maxHoras) * usableH;
+  }
+
+  const linePoints = daily.map((d, i) => {
+    const x = leftPad + i * gap + gap / 2;
+    const y = yHoras(d.horas);
+    return `${x},${y}`;
+  }).join(' ');
+
+  const totalAt = typeof totalAtenciones !== 'undefined' ? totalAtenciones : daily.reduce((a, d) => a + (Number(d.atenciones) || 0), 0);
+  const totalHr = typeof totalHoras !== 'undefined' ? totalHoras : daily.reduce((a, d) => a + (Number(d.horas) || 0), 0);
+  const promAt = typeof promedioAtencionesDia !== 'undefined' ? promedioAtencionesDia : (totalAt / daily.length).toFixed(1);
+  const promHr = typeof promedioHorasDia !== 'undefined' ? promedioHorasDia : (totalHr / daily.length).toFixed(1);
+
+  const diaTopObj = daily.reduce((max, d) => (Number(d.atenciones) || 0) > (Number(max.atenciones) || 0) ? d : max, daily[0]);
+  const diaTop = typeof diaMayorAtencion !== 'undefined' ? diaMayorAtencion : diaTopObj.dia;
+  const diasActivos = typeof diasConAtencion !== 'undefined' ? diasConAtencion : daily.filter(d => Number(d.atenciones) > 0).length;
+
+  const insightFinal = typeof insight !== 'undefined' && insight
+    ? insight
+    : 'La distribución diaria evidencia concentración operativa en jornadas específicas, permitiendo priorizar recursos y reforzar la planificación de atenciones.';
+%>
+
+  <div class="canvas">
+    <div class="card-main">
+
+      <div class="topbar">
+        <div class="title-wrap">
+          <div class="title-accent"></div>
+          <h1><%= titulo || 'Yauricocha - Abril 2026 - Atenciones y Horas por Día' %></h1>
+        </div>
+
+        <div class="logo-wrap">
+          <div class="logo-circle"></div>
+          <div class="logo-text"><%= logoText || 'COMM' %></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="slide10-kpi-row">
+        <div class="kpi kpi-blue">
+          <div class="kpi-icon">👥</div>
+          <div class="kpi-text">
+            <div class="kpi-label">TOTAL ATENCIONES</div>
+            <div class="kpi-value"><%= totalAt %></div>
+            <div class="kpi-sub">Atenciones del periodo</div>
+          </div>
+        </div>
+
+        <div class="kpi kpi-teal">
+          <div class="kpi-icon">⏱</div>
+          <div class="kpi-text">
+            <div class="kpi-label">TOTAL HORAS</div>
+            <div class="kpi-value"><%= totalHr %></div>
+            <div class="kpi-sub">Horas registradas</div>
+          </div>
+        </div>
+
+        <div class="kpi kpi-orange">
+          <div class="kpi-icon">📊</div>
+          <div class="kpi-text">
+            <div class="kpi-label">PROM. ATENCIONES/DÍA</div>
+            <div class="kpi-value"><%= promAt %></div>
+            <div class="kpi-sub">Promedio diario</div>
+          </div>
+        </div>
+
+        <div class="kpi kpi-purple">
+          <div class="kpi-icon">⌛</div>
+          <div class="kpi-text">
+            <div class="kpi-label">PROM. HORAS/DÍA</div>
+            <div class="kpi-value"><%= promHr %></div>
+            <div class="kpi-sub">Intensidad diaria</div>
+          </div>
+        </div>
+
+        <div class="kpi kpi-cyan">
+          <div class="kpi-icon">📅</div>
+          <div class="kpi-text">
+            <div class="kpi-label">DÍA CON MAYOR ATENCIÓN</div>
+            <div class="kpi-value"><%= diaTop %></div>
+            <div class="kpi-sub">Mayor carga operativa</div>
+          </div>
+        </div>
+
+        <div class="kpi kpi-blue">
+          <div class="kpi-icon">✅</div>
+          <div class="kpi-text">
+            <div class="kpi-label">DÍAS ACTIVOS</div>
+            <div class="kpi-value"><%= diasActivos %></div>
+            <div class="kpi-sub">Días con atenciones</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide10-content">
+        <div class="chart-panel">
+          <div class="chart-header">
+            <span>ATENCIONES Y HORAS POR DÍA</span>
+            <span class="chart-subtitle">Atenciones realizadas vs horas empleadas</span>
+          </div>
+
+          <div class="chart-body">
+            <svg width="100%" height="100%" viewBox="0 0 920 280" preserveAspectRatio="none">
+
+              <line x1="55" y1="250" x2="900" y2="250" stroke="#c8d8ef" stroke-width="2" />
+              <line x1="55" y1="25" x2="55" y2="250" stroke="#c8d8ef" stroke-width="2" />
+
+              <line x1="55" y1="200" x2="900" y2="200" stroke="#e7eef8" stroke-width="1" />
+              <line x1="55" y1="150" x2="900" y2="150" stroke="#e7eef8" stroke-width="1" />
+              <line x1="55" y1="100" x2="900" y2="100" stroke="#e7eef8" stroke-width="1" />
+              <line x1="55" y1="50" x2="900" y2="50" stroke="#e7eef8" stroke-width="1" />
+
+              <text x="10" y="255" class="axis-text">0</text>
+              <text x="8" y="155" class="axis-text">Med.</text>
+              <text x="8" y="55" class="axis-text">Max.</text>
+
+              <% daily.forEach((d, i) => {
+                const xCenter = leftPad + i * gap + gap / 2;
+                const barH = ((Number(d.atenciones) || 0) / maxAtenciones) * usableH;
+                const y = baseY - barH;
+                const x = xCenter - barW / 2;
+              %>
+                <rect x="<%= x %>" y="<%= y %>" width="<%= barW %>" height="<%= barH %>" rx="7" fill="#1f6fe5" opacity="0.92" />
+                <text x="<%= xCenter %>" y="<%= y - 7 %>" text-anchor="middle" class="bar-label"><%= d.atenciones %></text>
+                <text x="<%= xCenter %>" y="272" text-anchor="middle" class="axis-text"><%= d.dia %></text>
+              <% }) %>
+
+              <polyline
+                points="<%= linePoints %>"
+                fill="none"
+                stroke="#ff6a00"
+                stroke-width="5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+
+              <% daily.forEach((d, i) => {
+                const xCenter = leftPad + i * gap + gap / 2;
+                const y = yHoras(d.horas);
+              %>
+                <circle cx="<%= xCenter %>" cy="<%= y %>" r="7" fill="#ff6a00" stroke="#ffffff" stroke-width="3" />
+              <% }) %>
+
+              <rect x="610" y="10" width="18" height="18" rx="4" fill="#1f6fe5" />
+              <text x="636" y="25" class="legend-svg-text">Atenciones</text>
+
+              <circle cx="765" cy="20" r="9" fill="#ff6a00" />
+              <text x="782" y="25" class="legend-svg-text">Horas</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="side-panel">
+          <div class="side-header">
+            RESUMEN OPERATIVO
+          </div>
+
+          <div class="side-body">
+            <div class="mini-card">
+              <div class="mini-title">DÍA DE MAYOR CARGA</div>
+              <div class="mini-value"><%= diaTop %></div>
+              <div class="mini-desc">
+                Concentración de atenciones superior al promedio diario.
+              </div>
+            </div>
+
+            <div class="mini-card">
+              <div class="mini-title">INTENSIDAD OPERATIVA</div>
+              <div class="mini-value"><%= promHr %> h</div>
+              <div class="mini-desc">
+                Promedio de horas dedicadas por día activo del periodo.
+              </div>
+            </div>
+
+            <div class="mini-card">
+              <div class="mini-title">COBERTURA DEL PERIODO</div>
+              <div class="mini-value"><%= diasActivos %></div>
+              <div class="mini-desc">
+                Días con registro de atención dentro del mes seleccionado.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide10-insight-row">
+        <div class="insight-icon">🎯</div>
+        <div class="insight-title">LECTURA EJECUTIVA DEL COMPORTAMIENTO DIARIO</div>
+        <div class="insight-divider"></div>
+        <div class="insight-text"><%= insightFinal %></div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
