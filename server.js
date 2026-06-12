@@ -18,7 +18,7 @@ app.set('views', path.join(__dirname, 'views'));
  ****************************************************/
 
 app.get('/', (req, res) => {
-  res.redirect('/test-slide14');
+  res.redirect('/test-slide15');
 });
 
 app.get('/health', (req, res) => {
@@ -170,6 +170,53 @@ app.post('/render/slide14', async (req, res) => {
 });
 
 /****************************************************
+ * SLIDE 15
+ ****************************************************/
+
+app.get('/test-slide15', async (req, res) => {
+  try {
+    const sample = getSampleSlide15();
+    res.render('slide15', sample);
+  } catch (error) {
+    console.error('Error en /test-slide15:', error);
+    res.status(500).send('Error en /test-slide15: ' + error);
+  }
+});
+
+app.get('/test-slide15-png', async (req, res) => {
+  try {
+    const sample = getSampleSlide15();
+    const html = await renderEjsToString('slide15', sample);
+    const imageBuffer = await htmlToPng(html);
+
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Content-Length', imageBuffer.length);
+    res.end(imageBuffer);
+  } catch (error) {
+    console.error('Error generando PNG slide 15:', error);
+    res.status(500).send('Error generando PNG slide 15: ' + error);
+  }
+});
+
+app.post('/render/slide15', async (req, res) => {
+  try {
+    const data = normalizeSlide15Data(req.body || {});
+    const html = await renderEjsToString('slide15', data);
+    const imageBuffer = await htmlToPng(html);
+
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Content-Length', imageBuffer.length);
+    res.end(imageBuffer);
+  } catch (error) {
+    console.error('Error renderizando slide15:', error);
+    res.status(500).json({
+      ok: false,
+      error: String(error)
+    });
+  }
+});
+
+/****************************************************
  * DATOS DE PRUEBA - SLIDE 10
  ****************************************************/
 
@@ -278,56 +325,16 @@ function getSampleSlide14() {
     totalTiempoHoras: 195,
 
     items: [
-      {
-        nombre: 'Mantenimiento Programado (DAT)',
-        cantidad: 49,
-        tiempoHoras: 99
-      },
-      {
-        nombre: 'Instalación Nueva (CCTV)',
-        cantidad: 15,
-        tiempoHoras: 34
-      },
-      {
-        nombre: 'Mantenimiento Programado (CCTV)',
-        cantidad: 11,
-        tiempoHoras: 15
-      },
-      {
-        nombre: 'Instalación Nueva (DAT)',
-        cantidad: 6,
-        tiempoHoras: 13
-      },
-      {
-        nombre: 'Instalación Nueva (RAD)',
-        cantidad: 6,
-        tiempoHoras: 15
-      },
-      {
-        nombre: 'Mantenimiento Programado (RAD)',
-        cantidad: 2,
-        tiempoHoras: 5
-      },
-      {
-        nombre: 'Mantenimiento Programado (FO)',
-        cantidad: 2,
-        tiempoHoras: 4
-      },
-      {
-        nombre: 'Instalación Nueva (TEL)',
-        cantidad: 2,
-        tiempoHoras: 3
-      },
-      {
-        nombre: 'Instalación Nueva (GEO)',
-        cantidad: 2,
-        tiempoHoras: 5
-      },
-      {
-        nombre: 'Instalación Nueva (FO)',
-        cantidad: 1,
-        tiempoHoras: 2
-      }
+      { nombre: 'Mantenimiento Programado (DAT)', cantidad: 49, tiempoHoras: 99 },
+      { nombre: 'Instalación Nueva (CCTV)', cantidad: 15, tiempoHoras: 34 },
+      { nombre: 'Mantenimiento Programado (CCTV)', cantidad: 11, tiempoHoras: 15 },
+      { nombre: 'Instalación Nueva (DAT)', cantidad: 6, tiempoHoras: 13 },
+      { nombre: 'Instalación Nueva (RAD)', cantidad: 6, tiempoHoras: 15 },
+      { nombre: 'Mantenimiento Programado (RAD)', cantidad: 2, tiempoHoras: 5 },
+      { nombre: 'Mantenimiento Programado (FO)', cantidad: 2, tiempoHoras: 4 },
+      { nombre: 'Instalación Nueva (TEL)', cantidad: 2, tiempoHoras: 3 },
+      { nombre: 'Instalación Nueva (GEO)', cantidad: 2, tiempoHoras: 5 },
+      { nombre: 'Instalación Nueva (FO)', cantidad: 1, tiempoHoras: 2 }
     ],
 
     insights: [
@@ -338,6 +345,43 @@ function getSampleSlide14() {
 
     insight:
       'La mayor incidencia se concentra en Mantenimiento Programado (DAT).'
+  });
+}
+
+/****************************************************
+ * DATOS DE PRUEBA - SLIDE 15
+ ****************************************************/
+
+function getSampleSlide15() {
+  return normalizeSlide15Data({
+    titulo: 'Yauricocha - Abril 2026 - Top 10 Incidentes',
+    periodo: 'Abril 2026',
+    logoText: 'COMM',
+
+    totalIncidentes: 39,
+    totalTiempoHoras: 116,
+
+    items: [
+      { nombre: 'Sin señal de comunicación', cantidad: 11, tiempoHoras: 32 },
+      { nombre: 'Equipo de radio averiado', cantidad: 8, tiempoHoras: 24 },
+      { nombre: 'Corte de cable UTP', cantidad: 6, tiempoHoras: 17 },
+      { nombre: 'Intermitencia de red', cantidad: 4, tiempoHoras: 12 },
+      { nombre: 'Falla en cámara CCTV', cantidad: 3, tiempoHoras: 9 },
+      { nombre: 'Punto de red sin enlace', cantidad: 2, tiempoHoras: 6 },
+      { nombre: 'Falla en fuente de poder', cantidad: 2, tiempoHoras: 5 },
+      { nombre: 'Conector RJ45 dañado', cantidad: 1, tiempoHoras: 4 },
+      { nombre: 'Baja intensidad de señal', cantidad: 1, tiempoHoras: 4 },
+      { nombre: 'Reinicio de equipo de comunicación', cantidad: 1, tiempoHoras: 3 }
+    ],
+
+    insights: [
+      'La mayor incidencia se concentra en fallas de señal de comunicación.',
+      'El Top 3 concentra más del 64% del total de incidentes.',
+      'La priorización de incidentes recurrentes permite reducir tiempos de atención.'
+    ],
+
+    insight:
+      'La mayor incidencia se concentra en Sin señal de comunicación.'
   });
 }
 
@@ -540,26 +584,7 @@ function normalizeSlide14Data(body) {
       ? body.topRequerimientos
       : [];
 
-  let items = rawItems
-    .filter(item => item && (item.nombre || item.descripcion || item[0]))
-    .map(item => {
-      if (Array.isArray(item)) {
-        return {
-          nombre: String(item[0] || '').trim(),
-          cantidad: toNumber(item[1]),
-          tiempoHoras: toNumber(item[2])
-        };
-      }
-
-      return {
-        nombre: String(item.nombre || item.descripcion || item.requerimiento || '').trim(),
-        cantidad: toNumber(item.cantidad ?? item.total ?? item.valor ?? 0),
-        tiempoHoras: toNumber(item.tiempoHoras ?? item.tiempo ?? item.horas ?? item.totalHoras ?? 0)
-      };
-    })
-    .filter(item => item.nombre && item.cantidad > 0)
-    .sort((a, b) => b.cantidad - a.cantidad)
-    .slice(0, 10);
+  let items = normalizeParetoItems(rawItems, 'requerimiento');
 
   const totalTop10 = items.reduce((acc, item) => acc + item.cantidad, 0);
 
@@ -583,37 +608,8 @@ function normalizeSlide14Data(body) {
     porcentaje: '0.00%'
   };
 
-  const top2Cantidad = items
-    .slice(0, 2)
-    .reduce((acc, item) => acc + item.cantidad, 0);
-
-  const top3Cantidad = items
-    .slice(0, 3)
-    .reduce((acc, item) => acc + item.cantidad, 0);
-
-  const pctTop2 = body.pctTop2 || calcPct(top2Cantidad, totalRequerimientos);
-  const pctTop3 = body.pctTop3 || calcPct(top3Cantidad, totalRequerimientos);
-  const pctTop10 = body.pctTop10 || calcPct(totalTop10, totalRequerimientos);
-
-  const principalRequerimiento =
-    body.principalRequerimiento ||
-    top1.nombre;
-
-  const cantidadPrincipal =
-    body.cantidadPrincipal ||
-    top1.cantidad;
-
-  const pctPrincipal =
-    body.pctPrincipal ||
-    top1.porcentaje;
-
-  const insights = Array.isArray(body.insights)
-    ? body.insights
-    : [
-        body.insight || 'Los principales requerimientos concentran oportunidades de mejora para priorizar recursos operativos.',
-        'La gestión del Top 10 permite enfocar acciones sobre las demandas más recurrentes.',
-        'El seguimiento mensual facilita controlar recurrencias y fortalecer la planificación del servicio.'
-      ];
+  const top2Cantidad = items.slice(0, 2).reduce((acc, item) => acc + item.cantidad, 0);
+  const top3Cantidad = items.slice(0, 3).reduce((acc, item) => acc + item.cantidad, 0);
 
   return {
     titulo:
@@ -627,26 +623,135 @@ function normalizeSlide14Data(body) {
     totalTop10,
     totalTiempoHoras,
 
-    principalRequerimiento,
-    cantidadPrincipal,
-    pctPrincipal,
-    pctTop2,
-    pctTop3,
-    pctTop10,
+    principalRequerimiento: body.principalRequerimiento || top1.nombre,
+    cantidadPrincipal: body.cantidadPrincipal || top1.cantidad,
+    pctPrincipal: body.pctPrincipal || top1.porcentaje,
+    pctTop2: body.pctTop2 || calcPct(top2Cantidad, totalRequerimientos),
+    pctTop3: body.pctTop3 || calcPct(top3Cantidad, totalRequerimientos),
+    pctTop10: body.pctTop10 || calcPct(totalTop10, totalRequerimientos),
 
     items,
 
     insight:
       body.insight ||
-      `La mayor incidencia se concentra en ${principalRequerimiento}.`,
+      `La mayor incidencia se concentra en ${top1.nombre}.`,
 
-    insights
+    insights: Array.isArray(body.insights)
+      ? body.insights
+      : [
+          body.insight || 'Los principales requerimientos concentran oportunidades de mejora para priorizar recursos operativos.',
+          'La gestión del Top 10 permite enfocar acciones sobre las demandas más recurrentes.',
+          'El seguimiento mensual facilita controlar recurrencias y fortalecer la planificación del servicio.'
+        ]
+  };
+}
+
+/****************************************************
+ * NORMALIZAR DATOS - SLIDE 15
+ ****************************************************/
+
+function normalizeSlide15Data(body) {
+  const rawItems = Array.isArray(body.items)
+    ? body.items
+    : Array.isArray(body.topIncidentes)
+      ? body.topIncidentes
+      : [];
+
+  let items = normalizeParetoItems(rawItems, 'incidente');
+
+  const totalTop10 = items.reduce((acc, item) => acc + item.cantidad, 0);
+
+  const totalTiempoHoras =
+    toNumber(body.totalTiempoHoras ?? body.tiempoTotalHoras ?? body.totalHoras ?? 0) ||
+    items.reduce((acc, item) => acc + item.tiempoHoras, 0);
+
+  const totalIncidentes =
+    toNumber(body.totalIncidentes ?? body.total ?? body.incidentes ?? 0) ||
+    totalTop10;
+
+  items = items.map(item => ({
+    ...item,
+    porcentaje: item.porcentaje || calcPct(item.cantidad, totalIncidentes)
+  }));
+
+  const top1 = items[0] || {
+    nombre: '-',
+    cantidad: 0,
+    tiempoHoras: 0,
+    porcentaje: '0.00%'
+  };
+
+  const top2Cantidad = items.slice(0, 2).reduce((acc, item) => acc + item.cantidad, 0);
+  const top3Cantidad = items.slice(0, 3).reduce((acc, item) => acc + item.cantidad, 0);
+
+  return {
+    titulo:
+      body.titulo ||
+      `Yauricocha - ${body.periodo || 'Periodo'} - Top 10 Incidentes`,
+
+    periodo: body.periodo || 'Periodo',
+    logoText: body.logoText || 'COMM',
+
+    totalIncidentes,
+    totalTop10,
+    totalTiempoHoras,
+
+    principalIncidente: body.principalIncidente || top1.nombre,
+    cantidadPrincipal: body.cantidadPrincipal || top1.cantidad,
+    pctPrincipal: body.pctPrincipal || top1.porcentaje,
+    pctTop2: body.pctTop2 || calcPct(top2Cantidad, totalIncidentes),
+    pctTop3: body.pctTop3 || calcPct(top3Cantidad, totalIncidentes),
+    pctTop10: body.pctTop10 || calcPct(totalTop10, totalIncidentes),
+
+    items,
+
+    insight:
+      body.insight ||
+      `La mayor incidencia se concentra en ${top1.nombre}.`,
+
+    insights: Array.isArray(body.insights)
+      ? body.insights
+      : [
+          body.insight || 'Los principales incidentes concentran oportunidades de mejora operativa.',
+          'La gestión del Top 10 permite priorizar acciones sobre las fallas recurrentes.',
+          'El seguimiento mensual facilita reducir tiempos y controlar recurrencias.'
+        ]
   };
 }
 
 /****************************************************
  * HELPERS GENERALES
  ****************************************************/
+
+function normalizeParetoItems(rawItems, type) {
+  return rawItems
+    .filter(item => item && (item.nombre || item.descripcion || item[type] || item[0]))
+    .map(item => {
+      if (Array.isArray(item)) {
+        return {
+          nombre: String(item[0] || '').trim(),
+          cantidad: toNumber(item[1]),
+          tiempoHoras: toNumber(item[2])
+        };
+      }
+
+      return {
+        nombre: String(
+          item.nombre ||
+          item.descripcion ||
+          item[type] ||
+          item.requerimiento ||
+          item.incidente ||
+          ''
+        ).trim(),
+        cantidad: toNumber(item.cantidad ?? item.total ?? item.valor ?? 0),
+        tiempoHoras: toNumber(item.tiempoHoras ?? item.tiempo ?? item.horas ?? item.totalHoras ?? 0)
+      };
+    })
+    .filter(item => item.nombre && item.cantidad > 0)
+    .sort((a, b) => b.cantidad - a.cantidad)
+    .slice(0, 10);
+}
 
 function toNumber(value) {
   if (typeof value === 'number') return value;
