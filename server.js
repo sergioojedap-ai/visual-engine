@@ -18,7 +18,7 @@ app.set('views', path.join(__dirname, 'views'));
  ****************************************************/
 
 app.get('/', (req, res) => {
-  res.redirect('/test-slide19');
+  res.redirect('/test-slide11');
 });
 
 app.get('/health', (req, res) => {
@@ -68,6 +68,53 @@ app.post('/render/slide10', async (req, res) => {
     res.end(imageBuffer);
   } catch (error) {
     console.error('Error renderizando slide10:', error);
+    res.status(500).json({
+      ok: false,
+      error: String(error)
+    });
+  }
+});
+
+/****************************************************
+ * SLIDE 11
+ ****************************************************/
+
+app.get('/test-slide11', async (req, res) => {
+  try {
+    const sample = getSampleSlide11();
+    res.render('slide11', sample);
+  } catch (error) {
+    console.error('Error en /test-slide11:', error);
+    res.status(500).send('Error en /test-slide11: ' + error);
+  }
+});
+
+app.get('/test-slide11-png', async (req, res) => {
+  try {
+    const sample = getSampleSlide11();
+    const html = await renderEjsToString('slide11', sample);
+    const imageBuffer = await htmlToPng(html);
+
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Content-Length', imageBuffer.length);
+    res.end(imageBuffer);
+  } catch (error) {
+    console.error('Error generando PNG slide 11:', error);
+    res.status(500).send('Error generando PNG slide 11: ' + error);
+  }
+});
+
+app.post('/render/slide11', async (req, res) => {
+  try {
+    const data = normalizeSlide11Data(req.body || {});
+    const html = await renderEjsToString('slide11', data);
+    const imageBuffer = await htmlToPng(html);
+
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Content-Length', imageBuffer.length);
+    res.end(imageBuffer);
+  } catch (error) {
+    console.error('Error renderizando slide11:', error);
     res.status(500).json({
       ok: false,
       error: String(error)
@@ -413,6 +460,29 @@ function getSampleSlide10() {
 }
 
 /****************************************************
+ * DATOS DE PRUEBA - SLIDE 11
+ ****************************************************/
+
+function getSampleSlide11() {
+  return normalizeSlide11Data({
+    titulo: 'Yauricocha - Abril 2026 - Mina vs Superficie',
+    periodo: 'Abril 2026',
+    logoText: 'COMM',
+
+    totalAtenciones: 137,
+    totalHoras: 391,
+
+    items: [
+      { zona: 'Mina', atenciones: 72, horas: 215 },
+      { zona: 'Superficie', atenciones: 65, horas: 176 }
+    ],
+
+    insight:
+      'La mayor concentración de atenciones se presenta en Mina.'
+  });
+}
+
+/****************************************************
  * DATOS DE PRUEBA - SLIDE 12
  ****************************************************/
 
@@ -654,6 +724,116 @@ function normalizeSlide10Data(body) {
     insight:
       body.insight ||
       'La distribución diaria evidencia estabilidad operativa y picos controlados de demanda durante el periodo evaluado.'
+  };
+}
+
+/****************************************************
+ * NORMALIZAR DATOS - SLIDE 11
+ ****************************************************/
+
+function normalizeSlide11Data(body) {
+  const rawItems = Array.isArray(body.items)
+    ? body.items
+    : Array.isArray(body.zonas)
+      ? body.zonas
+      : [];
+
+  let items = rawItems
+    .filter(item => item && (item.zona || item.nombre || item.ubicacion || item[0]))
+    .map(item => {
+      if (Array.isArray(item)) {
+        return {
+          zona: String(item[0] || '').trim(),
+          atenciones: toNumber(item[1]),
+          horas: toNumber(item[2])
+        };
+      }
+
+      return {
+        zona: String(item.zona || item.nombre || item.ubicacion || '').trim(),
+        atenciones: toNumber(item.atenciones ?? item.cantidad ?? item.total ?? 0),
+        horas: toNumber(item.horas ?? item.tiempoHoras ?? item.tiempo ?? 0)
+      };
+    })
+    .filter(item => item.zona);
+
+  if (!items.length) {
+    items = [
+      {
+        zona: 'Mina',
+        atenciones: toNumber(body.minaAtenciones ?? 72),
+        horas: toNumber(body.minaHoras ?? 215)
+      },
+      {
+        zona: 'Superficie',
+        atenciones: toNumber(body.superficieAtenciones ?? 65),
+        horas: toNumber(body.superficieHoras ?? 176)
+      }
+    ];
+  }
+
+  const totalAtenciones =
+    toNumber(body.totalAtenciones) ||
+    items.reduce((acc, item) => acc + item.atenciones, 0);
+
+  const totalHoras =
+    toNumber(body.totalHoras) ||
+    items.reduce((acc, item) => acc + item.horas, 0);
+
+  items = items.map(item => ({
+    ...item,
+    pctAtenciones: item.pctAtenciones || calcPct(item.atenciones, totalAtenciones),
+    pctHoras: item.pctHoras || calcPct(item.horas, totalHoras),
+    horasPorAtencion: item.atenciones
+      ? (item.horas / item.atenciones).toFixed(2)
+      : '0.00'
+  }));
+
+  const mina = items.find(item =>
+    String(item.zona).toLowerCase().includes('mina')
+  ) || items[0];
+
+  const superficie = items.find(item =>
+    String(item.zona).toLowerCase().includes('super')
+  ) || items[1] || {
+    zona: 'Superficie',
+    atenciones: 0,
+    horas: 0
+  };
+
+  const zonaPrincipal =
+    mina && mina.atenciones >= superficie.atenciones
+      ? mina
+      : superficie;
+
+  const diferencia = Math.abs(
+    toNumber(mina?.atenciones) - toNumber(superficie?.atenciones)
+  );
+
+  return {
+    titulo:
+      body.titulo ||
+      `Yauricocha - ${body.periodo || 'Periodo'} - Mina vs Superficie`,
+
+    periodo: body.periodo || 'Periodo',
+    logoText: body.logoText || 'COMM',
+
+    totalAtenciones,
+    totalHoras,
+
+    minaAtenciones: mina?.atenciones || 0,
+    minaHoras: mina?.horas || 0,
+    superficieAtenciones: superficie?.atenciones || 0,
+    superficieHoras: superficie?.horas || 0,
+
+    zonaPrincipal: zonaPrincipal?.zona || '-',
+    diferencia,
+
+    items,
+
+    insight:
+      body.insight ||
+      `La mayor concentración de atenciones se presenta en ${zonaPrincipal?.zona || '-'}.`
   };
 }
 
@@ -1103,8 +1283,16 @@ function normalizeParetoItems(rawItems, type) {
           item.incidente ||
           ''
         ).trim(),
+
         cantidad: toNumber(item.cantidad ?? item.total ?? item.valor ?? 0),
-        tiempoHoras: toNumber(item.tiempoHoras ?? item.tiempo ?? item.horas ?? item.totalHoras ?? 0)
+
+        tiempoHoras: toNumber(
+          item.tiempoHoras ??
+          item.tiempo ??
+          item.horas ??
+          item.totalHoras ??
+          0
+        )
       };
     })
     .filter(item => item.nombre && item.cantidad > 0)
