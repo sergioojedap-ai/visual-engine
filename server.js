@@ -18,7 +18,7 @@ app.set('views', path.join(__dirname, 'views'));
  ****************************************************/
 
 app.get('/', (req, res) => {
-  res.redirect('/test-slide12');
+  res.redirect('/test-slide14');
 });
 
 app.get('/health', (req, res) => {
@@ -277,26 +277,26 @@ function getSampleSlide14() {
     totalRequerimientos: 98,
 
     items: [
-      { nombre: 'Instalación de punto de red', cantidad: 18 },
-      { nombre: 'Configuración de radio comunicación', cantidad: 14 },
-      { nombre: 'Reubicación de equipos de comunicación', cantidad: 12 },
-      { nombre: 'Instalación de cable UTP', cantidad: 10 },
-      { nombre: 'Soporte de conectividad en mina', cantidad: 9 },
-      { nombre: 'Cambio de conector RJ45', cantidad: 8 },
-      { nombre: 'Habilitación de enlace de comunicación', cantidad: 7 },
-      { nombre: 'Validación de señal en interior mina', cantidad: 6 },
-      { nombre: 'Instalación de canaleta y accesorios', cantidad: 5 },
-      { nombre: 'Revisión de punto de comunicación', cantidad: 4 }
+      { nombre: 'Mantenimiento Programado (DAT)', cantidad: 49 },
+      { nombre: 'Instalación Nueva (CCTV)', cantidad: 15 },
+      { nombre: 'Mantenimiento Programado (CCTV)', cantidad: 11 },
+      { nombre: 'Instalación Nueva (DAT)', cantidad: 6 },
+      { nombre: 'Instalación Nueva (RAD)', cantidad: 6 },
+      { nombre: 'Instalación Nueva (GEO)', cantidad: 2 },
+      { nombre: 'Instalación Nueva (TEL)', cantidad: 2 },
+      { nombre: 'Mantenimiento Programado (FO)', cantidad: 2 },
+      { nombre: 'Mantenimiento Programado (RAD)', cantidad: 2 },
+      { nombre: 'Equipo Averiado', cantidad: 1 }
     ],
 
     insights: [
-      'Los requerimientos se concentran en actividades de instalación y soporte de conectividad.',
-      'El Top 10 permite priorizar recursos sobre las solicitudes de mayor recurrencia.',
-      'El seguimiento mensual ayuda a controlar la demanda operativa y reducir reprocesos.'
+      'Mantenimiento Programado DAT representa la mitad de los requerimientos del periodo.',
+      'El Top 3 concentra más del 76% del total de requerimientos.',
+      'La concentración permite priorizar recursos sobre las solicitudes más recurrentes.'
     ],
 
     insight:
-      'Los principales requerimientos evidencian concentración en soporte e instalación de infraestructura de comunicación.'
+      'Los principales requerimientos evidencian concentración de demanda operativa en categorías recurrentes.'
   });
 }
 
@@ -518,22 +518,47 @@ function normalizeSlide14Data(body) {
     .sort((a, b) => b.cantidad - a.cantidad)
     .slice(0, 10);
 
-  const totalTop = items.reduce((acc, item) => acc + item.cantidad, 0);
+  const totalTop10 = items.reduce((acc, item) => acc + item.cantidad, 0);
 
   const totalRequerimientos =
     toNumber(body.totalRequerimientos || body.total || body.requerimientos) ||
-    totalTop;
+    totalTop10;
 
   items = items.map(item => ({
     ...item,
     porcentaje: item.porcentaje || calcPct(item.cantidad, totalRequerimientos)
   }));
 
+  const top1 = items[0] || {
+    nombre: '-',
+    cantidad: 0,
+    porcentaje: '0.00%'
+  };
+
+  const top3Cantidad = items
+    .slice(0, 3)
+    .reduce((acc, item) => acc + item.cantidad, 0);
+
+  const pctTop3 = body.pctTop3 || calcPct(top3Cantidad, totalRequerimientos);
+  const pctTop10 = body.pctTop10 || calcPct(totalTop10, totalRequerimientos);
+
+  const principalRequerimiento =
+    body.principalRequerimiento ||
+    top1.nombre;
+
+  const cantidadPrincipal =
+    body.cantidadPrincipal ||
+    top1.cantidad;
+
+  const pctPrincipal =
+    body.pctPrincipal ||
+    top1.porcentaje;
+
   const insights = Array.isArray(body.insights)
     ? body.insights
     : [
         body.insight || 'Los principales requerimientos concentran oportunidades de mejora para priorizar recursos operativos.',
-        'La gestión del top 10 permite enfocar acciones sobre las demandas más recurrentes.',
+        'La gestión del Top 10 permite enfocar acciones sobre las demandas más recurrentes.',
         'El seguimiento mensual facilita controlar recurrencias y fortalecer la planificación del servicio.'
       ];
 
@@ -546,6 +571,13 @@ function normalizeSlide14Data(body) {
     logoText: body.logoText || 'COMM',
 
     totalRequerimientos,
+    totalTop10,
+    principalRequerimiento,
+    cantidadPrincipal,
+    pctPrincipal,
+    pctTop3,
+    pctTop10,
+
     items,
 
     insight:
@@ -572,7 +604,7 @@ function toNumber(value) {
 
 function calcPct(value, total) {
   if (!total) return '0.00%';
-  return ((value / total) * 100).toFixed(2) + '%';
+  return ((Number(value) / Number(total)) * 100).toFixed(2) + '%';
 }
 
 function renderEjsToString(viewName, data) {
