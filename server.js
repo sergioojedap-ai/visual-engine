@@ -29,54 +29,7 @@ app.get('/health', (req, res) => {
 });
 
 /****************************************************
- * SLIDE 12 - PRUEBAS
- ****************************************************/
-
-app.get('/test-slide12', async (req, res) => {
-  try {
-    const sample = getSampleSlide12();
-    res.render('slide12', sample);
-  } catch (error) {
-    console.error('Error en /test-slide12:', error);
-    res.status(500).send('Error en /test-slide12: ' + error);
-  }
-});
-
-app.get('/test-slide12-png', async (req, res) => {
-  try {
-    const sample = getSampleSlide12();
-    const html = await renderEjsToString('slide12', sample);
-    const imageBuffer = await htmlToPng(html);
-
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Length', imageBuffer.length);
-    res.end(imageBuffer);
-  } catch (error) {
-    console.error('Error generando PNG slide 12:', error);
-    res.status(500).send('Error generando PNG slide 12: ' + error);
-  }
-});
-
-app.post('/render/slide12', async (req, res) => {
-  try {
-    const data = normalizeSlide12Data(req.body || {});
-    const html = await renderEjsToString('slide12', data);
-    const imageBuffer = await htmlToPng(html);
-
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Length', imageBuffer.length);
-    res.end(imageBuffer);
-  } catch (error) {
-    console.error('Error renderizando slide12:', error);
-    res.status(500).json({
-      ok: false,
-      error: String(error)
-    });
-  }
-});
-
-/****************************************************
- * SLIDE 10 - PRUEBAS
+ * SLIDE 10
  ****************************************************/
 
 app.get('/test-slide10', async (req, res) => {
@@ -123,37 +76,98 @@ app.post('/render/slide10', async (req, res) => {
 });
 
 /****************************************************
- * DATOS DE PRUEBA - SLIDE 12
+ * SLIDE 12
  ****************************************************/
 
-function getSampleSlide12() {
-  return normalizeSlide12Data({
-    titulo: 'Yauricocha - Abril 2026 - Incidentes vs Requerimientos',
-    periodo: 'Abril 2026',
-    logoText: 'COMM',
+app.get('/test-slide12', async (req, res) => {
+  try {
+    const sample = getSampleSlide12();
+    res.render('slide12', sample);
+  } catch (error) {
+    console.error('Error en /test-slide12:', error);
+    res.status(500).send('Error en /test-slide12: ' + error);
+  }
+});
 
-    totalAtenciones: 137,
-    incidentes: 39,
-    requerimientos: 98,
-    brecha: 59,
+app.get('/test-slide12-png', async (req, res) => {
+  try {
+    const sample = getSampleSlide12();
+    const html = await renderEjsToString('slide12', sample);
+    const imageBuffer = await htmlToPng(html);
 
-    pctIncidentes: '28.47%',
-    pctRequerimientos: '71.53%',
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Content-Length', imageBuffer.length);
+    res.end(imageBuffer);
+  } catch (error) {
+    console.error('Error generando PNG slide 12:', error);
+    res.status(500).send('Error generando PNG slide 12: ' + error);
+  }
+});
 
-    tabla: {
-      up: 'TOTAL',
-      incidentes: 39,
-      requerimientos: 98,
-      total: 137,
-      pctIncidentes: '28.47%',
-      pctRequerimientos: '71.53%',
-      pctTotal: '100%'
-    },
+app.post('/render/slide12', async (req, res) => {
+  try {
+    const data = normalizeSlide12Data(req.body || {});
+    const html = await renderEjsToString('slide12', data);
+    const imageBuffer = await htmlToPng(html);
 
-    insight:
-      'La mayoría de las atenciones corresponden a requerimientos, evidenciando prioridad de gestión en actividades planificadas frente a incidencias.'
-  });
-}
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Content-Length', imageBuffer.length);
+    res.end(imageBuffer);
+  } catch (error) {
+    console.error('Error renderizando slide12:', error);
+    res.status(500).json({
+      ok: false,
+      error: String(error)
+    });
+  }
+});
+
+/****************************************************
+ * SLIDE 14
+ ****************************************************/
+
+app.get('/test-slide14', async (req, res) => {
+  try {
+    const sample = getSampleSlide14();
+    res.render('slide14', sample);
+  } catch (error) {
+    console.error('Error en /test-slide14:', error);
+    res.status(500).send('Error en /test-slide14: ' + error);
+  }
+});
+
+app.get('/test-slide14-png', async (req, res) => {
+  try {
+    const sample = getSampleSlide14();
+    const html = await renderEjsToString('slide14', sample);
+    const imageBuffer = await htmlToPng(html);
+
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Content-Length', imageBuffer.length);
+    res.end(imageBuffer);
+  } catch (error) {
+    console.error('Error generando PNG slide 14:', error);
+    res.status(500).send('Error generando PNG slide 14: ' + error);
+  }
+});
+
+app.post('/render/slide14', async (req, res) => {
+  try {
+    const data = normalizeSlide14Data(req.body || {});
+    const html = await renderEjsToString('slide14', data);
+    const imageBuffer = await htmlToPng(html);
+
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Content-Length', imageBuffer.length);
+    res.end(imageBuffer);
+  } catch (error) {
+    console.error('Error renderizando slide14:', error);
+    res.status(500).json({
+      ok: false,
+      error: String(error)
+    });
+  }
+});
 
 /****************************************************
  * DATOS DE PRUEBA - SLIDE 10
@@ -218,25 +232,168 @@ function getSampleSlide10() {
 }
 
 /****************************************************
+ * DATOS DE PRUEBA - SLIDE 12
+ ****************************************************/
+
+function getSampleSlide12() {
+  return normalizeSlide12Data({
+    titulo: 'Yauricocha - Abril 2026 - Incidentes vs Requerimientos',
+    periodo: 'Abril 2026',
+    logoText: 'COMM',
+
+    totalAtenciones: 137,
+    incidentes: 39,
+    requerimientos: 98,
+    brecha: 59,
+
+    pctIncidentes: '28.47%',
+    pctRequerimientos: '71.53%',
+
+    tabla: {
+      up: 'TOTAL',
+      incidentes: 39,
+      requerimientos: 98,
+      total: 137,
+      pctIncidentes: '28.47%',
+      pctRequerimientos: '71.53%',
+      pctTotal: '100%'
+    },
+
+    insight:
+      'La mayoría de las atenciones corresponden a requerimientos, evidenciando prioridad de gestión en actividades planificadas frente a incidencias.'
+  });
+}
+
+/****************************************************
+ * DATOS DE PRUEBA - SLIDE 14
+ ****************************************************/
+
+function getSampleSlide14() {
+  return normalizeSlide14Data({
+    titulo: 'TOP 10 REQUERIMIENTOS - YAURICOCHA ABRIL 2026',
+    periodo: 'Abril 2026',
+    logoText: 'COMM',
+
+    totalRequerimientos: 98,
+
+    items: [
+      { nombre: 'Instalación de punto de red', cantidad: 18 },
+      { nombre: 'Configuración de radio comunicación', cantidad: 14 },
+      { nombre: 'Reubicación de equipos de comunicación', cantidad: 12 },
+      { nombre: 'Instalación de cable UTP', cantidad: 10 },
+      { nombre: 'Soporte de conectividad en mina', cantidad: 9 },
+      { nombre: 'Cambio de conector RJ45', cantidad: 8 },
+      { nombre: 'Habilitación de enlace de comunicación', cantidad: 7 },
+      { nombre: 'Validación de señal en interior mina', cantidad: 6 },
+      { nombre: 'Instalación de canaleta y accesorios', cantidad: 5 },
+      { nombre: 'Revisión de punto de comunicación', cantidad: 4 }
+    ],
+
+    insights: [
+      'Los requerimientos se concentran en actividades de instalación y soporte de conectividad.',
+      'El Top 10 permite priorizar recursos sobre las solicitudes de mayor recurrencia.',
+      'El seguimiento mensual ayuda a controlar la demanda operativa y reducir reprocesos.'
+    ],
+
+    insight:
+      'Los principales requerimientos evidencian concentración en soporte e instalación de infraestructura de comunicación.'
+  });
+}
+
+/****************************************************
+ * NORMALIZAR DATOS - SLIDE 10
+ ****************************************************/
+
+function normalizeSlide10Data(body) {
+  const dias = Array.isArray(body.dias) ? body.dias : [];
+
+  const cleanedDias = dias
+    .filter(d => d && (d.fecha !== undefined || d.dia !== undefined))
+    .map(d => ({
+      fecha: String(d.fecha || d.dia || '').trim(),
+      dia: String(d.dia || d.fecha || '').trim(),
+      atenciones: toNumber(d.atenciones),
+      horas: toNumber(d.horas)
+    }));
+
+  const totalAtenciones =
+    toNumber(body.totalAtenciones) ||
+    cleanedDias.reduce((acc, d) => acc + d.atenciones, 0);
+
+  const totalHoras =
+    toNumber(body.totalHoras) ||
+    cleanedDias.reduce((acc, d) => acc + d.horas, 0);
+
+  const diasConAtencion =
+    toNumber(body.diasConAtencion || body.diasPeriodo) ||
+    cleanedDias.filter(d => d.atenciones > 0 || d.horas > 0).length;
+
+  const promedioAtencionesDia =
+    body.promedioAtencionesDia ||
+    (diasConAtencion ? (totalAtenciones / diasConAtencion).toFixed(1) : '0.0');
+
+  const promedioHorasDia =
+    body.promedioHorasDia ||
+    (diasConAtencion ? (totalHoras / diasConAtencion).toFixed(1) : '0.0');
+
+  const horasPorAtencion =
+    body.horasPorAtencion ||
+    (totalAtenciones ? (totalHoras / totalAtenciones).toFixed(2) : '0.00');
+
+  const insights = Array.isArray(body.insights)
+    ? body.insights
+    : [
+        body.insight || 'Volumen total significativo de actividad operativa.',
+        'Estabilidad operativa con picos controlados de demanda.',
+        'Monitoreo continuo para mantener la calidad del servicio.'
+      ];
+
+  return {
+    titulo:
+      body.titulo ||
+      `ATENCIONES EN LA OPERACIÓN YAURICOCHA - ${body.periodo || 'PERIODO'}`,
+
+    periodo: body.periodo || 'Periodo',
+    logoText: body.logoText || 'COMM',
+
+    diasPeriodo: toNumber(body.diasPeriodo) || diasConAtencion,
+    totalAtenciones,
+    totalHoras,
+    promedioAtencionesDia,
+    promedioHorasDia,
+    horasPorAtencion,
+    diasConAtencion,
+
+    dias: cleanedDias,
+
+    insight:
+      body.insight ||
+      'La distribución diaria evidencia estabilidad operativa y picos controlados de demanda durante el periodo evaluado.',
+
+    insights
+  };
+}
+
+/****************************************************
  * NORMALIZAR DATOS - SLIDE 12
  ****************************************************/
 
 function normalizeSlide12Data(body) {
   const kpis = body.kpis || {};
 
-  const totalAtenciones = Number(
+  const totalAtenciones = toNumber(
     body.totalAtenciones ??
     kpis.totalAtenciones ??
     0
   );
 
-  const incidentes = Number(
+  const incidentes = toNumber(
     body.incidentes ??
     kpis.incidentes ??
     0
   );
 
-  const requerimientos = Number(
+  const requerimientos = toNumber(
     body.requerimientos ??
     kpis.requerimientos ??
     0
@@ -254,7 +411,7 @@ function normalizeSlide12Data(body) {
     kpis.pctRequerimientos ??
     calcPct(requerimientos, total);
 
-  const brecha = Number(
+  const brecha = toNumber(
     body.brecha ??
     kpis.brecha ??
     requerimientos - incidentes
@@ -332,74 +489,68 @@ function normalizeTablaSlide12(tabla, base) {
 }
 
 /****************************************************
- * NORMALIZAR DATOS - SLIDE 10
+ * NORMALIZAR DATOS - SLIDE 14
  ****************************************************/
 
-function normalizeSlide10Data(body) {
-  const dias = Array.isArray(body.dias) ? body.dias : [];
+function normalizeSlide14Data(body) {
+  const rawItems = Array.isArray(body.items)
+    ? body.items
+    : Array.isArray(body.topRequerimientos)
+      ? body.topRequerimientos
+      : [];
 
-  const cleanedDias = dias
-    .filter(d => d && (d.fecha !== undefined || d.dia !== undefined))
-    .map(d => ({
-      fecha: String(d.fecha || d.dia || '').trim(),
-      dia: String(d.dia || d.fecha || '').trim(),
-      atenciones: Number(d.atenciones) || 0,
-      horas: Number(d.horas) || 0
-    }));
+  let items = rawItems
+    .filter(item => item && (item.nombre || item.descripcion || item[0]))
+    .map(item => {
+      if (Array.isArray(item)) {
+        return {
+          nombre: String(item[0] || '').trim(),
+          cantidad: toNumber(item[1])
+        };
+      }
 
-  const totalAtenciones =
-    Number(body.totalAtenciones) ||
-    cleanedDias.reduce((acc, d) => acc + d.atenciones, 0);
+      return {
+        nombre: String(item.nombre || item.descripcion || item.requerimiento || '').trim(),
+        cantidad: toNumber(item.cantidad || item.total || item.valor)
+      };
+    })
+    .filter(item => item.nombre && item.cantidad > 0)
+    .sort((a, b) => b.cantidad - a.cantidad)
+    .slice(0, 10);
 
-  const totalHoras =
-    Number(body.totalHoras) ||
-    cleanedDias.reduce((acc, d) => acc + d.horas, 0);
+  const totalTop = items.reduce((acc, item) => acc + item.cantidad, 0);
 
-  const diasConAtencion =
-    Number(body.diasConAtencion || body.diasPeriodo) ||
-    cleanedDias.filter(d => d.atenciones > 0 || d.horas > 0).length;
+  const totalRequerimientos =
+    toNumber(body.totalRequerimientos || body.total || body.requerimientos) ||
+    totalTop;
 
-  const promedioAtencionesDia =
-    body.promedioAtencionesDia ||
-    (diasConAtencion ? (totalAtenciones / diasConAtencion).toFixed(1) : '0.0');
-
-  const promedioHorasDia =
-    body.promedioHorasDia ||
-    (diasConAtencion ? (totalHoras / diasConAtencion).toFixed(1) : '0.0');
-
-  const horasPorAtencion =
-    body.horasPorAtencion ||
-    (totalAtenciones ? (totalHoras / totalAtenciones).toFixed(2) : '0.00');
+  items = items.map(item => ({
+    ...item,
+    porcentaje: item.porcentaje || calcPct(item.cantidad, totalRequerimientos)
+  }));
 
   const insights = Array.isArray(body.insights)
     ? body.insights
     : [
-        body.insight || 'Volumen total significativo de actividad operativa.',
-        'Estabilidad operativa con picos controlados de demanda.',
-        'Monitoreo continuo para mantener la calidad del servicio.'
+        body.insight || 'Los principales requerimientos concentran oportunidades de mejora para priorizar recursos operativos.',
+        'La gestión del top 10 permite enfocar acciones sobre las demandas más recurrentes.',
+        'El seguimiento mensual facilita controlar recurrencias y fortalecer la planificación del servicio.'
       ];
 
   return {
     titulo:
       body.titulo ||
-      `ATENCIONES EN LA OPERACIÓN YAURICOCHA - ${body.periodo || 'PERIODO'}`,
+      `TOP 10 REQUERIMIENTOS - YAURICOCHA ${String(body.periodo || 'PERIODO').toUpperCase()}`,
 
     periodo: body.periodo || 'Periodo',
     logoText: body.logoText || 'COMM',
 
-    diasPeriodo: Number(body.diasPeriodo) || diasConAtencion,
-    totalAtenciones,
-    totalHoras,
-    promedioAtencionesDia,
-    promedioHorasDia,
-    horasPorAtencion,
-    diasConAtencion,
-
-    dias: cleanedDias,
+    totalRequerimientos,
+    items,
 
     insight:
       body.insight ||
-      'La distribución diaria evidencia estabilidad operativa y picos controlados de demanda durante el periodo evaluado.',
+      'Los principales requerimientos evidencian concentración de demanda operativa en categorías recurrentes.',
 
     insights
   };
@@ -408,6 +559,16 @@ function normalizeSlide10Data(body) {
 /****************************************************
  * HELPERS GENERALES
  ****************************************************/
+
+function toNumber(value) {
+  if (typeof value === 'number') return value;
+
+  const txt = String(value || '')
+    .replace(',', '.')
+    .replace(/[^\d.-]/g, '');
+
+  return Number(txt) || 0;
+}
 
 function calcPct(value, total) {
   if (!total) return '0.00%';
@@ -425,7 +586,6 @@ function renderEjsToString(viewName, data) {
 
 /****************************************************
  * CONVERTIR HTML A PNG
- * Funciona en laptop y en Render
  ****************************************************/
 
 async function htmlToPng(html) {
