@@ -445,15 +445,15 @@ function getSampleSlide17() {
     totalSuministros: 318,
 
     items: [
-      { nombre: 'Cable UTP', requerimientos: 80, incidentes: 30, cantidad: 110 },
-      { nombre: 'Conector RJ45', requerimientos: 45, incidentes: 22, cantidad: 67 },
-      { nombre: 'Cintillos', requerimientos: 38, incidentes: 16, cantidad: 54 },
-      { nombre: 'Canaleta', requerimientos: 24, incidentes: 10, cantidad: 34 },
-      { nombre: 'Cinta aislante', requerimientos: 18, incidentes: 8, cantidad: 26 },
-      { nombre: 'Patch cord', requerimientos: 12, incidentes: 4, cantidad: 16 },
-      { nombre: 'Fuente 12V', requerimientos: 4, incidentes: 3, cantidad: 7 },
-      { nombre: 'Balun CCTV', requerimientos: 2, incidentes: 1, cantidad: 3 },
-      { nombre: 'Caja de paso', requerimientos: 1, incidentes: 0, cantidad: 1 }
+      { nombre: 'Cable UTP', unidad: 'mts', requerimientos: 80, incidentes: 30, cantidad: 110 },
+      { nombre: 'Conector RJ45', unidad: 'UN', requerimientos: 45, incidentes: 22, cantidad: 67 },
+      { nombre: 'Cintillos', unidad: 'UN', requerimientos: 38, incidentes: 16, cantidad: 54 },
+      { nombre: 'Canaleta', unidad: 'mts', requerimientos: 24, incidentes: 10, cantidad: 34 },
+      { nombre: 'Cinta aislante', unidad: 'UN', requerimientos: 18, incidentes: 8, cantidad: 26 },
+      { nombre: 'Patch cord', unidad: 'UN', requerimientos: 12, incidentes: 4, cantidad: 16 },
+      { nombre: 'Fuente 12V', unidad: 'UN', requerimientos: 4, incidentes: 3, cantidad: 7 },
+      { nombre: 'Balun CCTV', unidad: 'UN', requerimientos: 2, incidentes: 1, cantidad: 3 },
+      { nombre: 'Caja de paso', unidad: 'UN', requerimientos: 1, incidentes: 0, cantidad: 1 }
     ],
 
     insights: [
@@ -827,6 +827,7 @@ function normalizeSlide17Data(body) {
 
   const top1 = items[0] || {
     nombre: '-',
+    unidad: '-',
     requerimientos: 0,
     incidentes: 0,
     cantidad: 0,
@@ -909,12 +910,13 @@ function normalizeSuministroItems(rawItems) {
     .filter(item => item && (item.nombre || item.descripcion || item.suministro || item.material || item[0]))
     .map(item => {
       if (Array.isArray(item)) {
-        const req = toNumber(item[1]);
-        const inc = toNumber(item[2]);
-        const total = toNumber(item[3]) || req + inc;
+        const req = toNumber(item[2]);
+        const inc = toNumber(item[3]);
+        const total = toNumber(item[4]) || req + inc;
 
         return {
           nombre: String(item[0] || '').trim(),
+          unidad: String(item[1] || '-').trim(),
           requerimientos: req,
           incidentes: inc,
           cantidad: total
@@ -933,6 +935,14 @@ function normalizeSuministroItems(rawItems) {
           item.material ||
           ''
         ).trim(),
+
+        unidad: String(
+          item.unidad ||
+          item.um ||
+          item.medida ||
+          '-'
+        ).trim(),
+
         requerimientos: req,
         incidentes: inc,
         cantidad: total
