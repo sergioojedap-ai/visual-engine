@@ -18,7 +18,7 @@ app.set('views', path.join(__dirname, 'views'));
  ****************************************************/
 
 app.get('/', (req, res) => {
-  res.redirect('/test-slide18');
+  res.redirect('/test-slide19');
 });
 
 app.get('/health', (req, res) => {
@@ -311,6 +311,53 @@ app.post('/render/slide18', async (req, res) => {
 });
 
 /****************************************************
+ * SLIDE 19
+ ****************************************************/
+
+app.get('/test-slide19', async (req, res) => {
+  try {
+    const sample = getSampleSlide19();
+    res.render('slide19', sample);
+  } catch (error) {
+    console.error('Error en /test-slide19:', error);
+    res.status(500).send('Error en /test-slide19: ' + error);
+  }
+});
+
+app.get('/test-slide19-png', async (req, res) => {
+  try {
+    const sample = getSampleSlide19();
+    const html = await renderEjsToString('slide19', sample);
+    const imageBuffer = await htmlToPng(html);
+
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Content-Length', imageBuffer.length);
+    res.end(imageBuffer);
+  } catch (error) {
+    console.error('Error generando PNG slide 19:', error);
+    res.status(500).send('Error generando PNG slide 19: ' + error);
+  }
+});
+
+app.post('/render/slide19', async (req, res) => {
+  try {
+    const data = normalizeSlide19Data(req.body || {});
+    const html = await renderEjsToString('slide19', data);
+    const imageBuffer = await htmlToPng(html);
+
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Content-Length', imageBuffer.length);
+    res.end(imageBuffer);
+  } catch (error) {
+    console.error('Error renderizando slide19:', error);
+    res.status(500).json({
+      ok: false,
+      error: String(error)
+    });
+  }
+});
+
+/****************************************************
  * DATOS DE PRUEBA - SLIDE 10
  ****************************************************/
 
@@ -326,6 +373,7 @@ function getSampleSlide10() {
     promedioHorasDia: '13.0',
     horasPorAtencion: '2.85',
     diasConAtencion: 30,
+
     dias: [
       { fecha: '01/04/2026', dia: '01', atenciones: 4, horas: 12 },
       { fecha: '02/04/2026', dia: '02', atenciones: 6, horas: 18 },
@@ -358,6 +406,7 @@ function getSampleSlide10() {
       { fecha: '29/04/2026', dia: '29', atenciones: 4, horas: 12 },
       { fecha: '30/04/2026', dia: '30', atenciones: 5, horas: 13 }
     ],
+
     insight:
       'La distribución diaria evidencia estabilidad operativa y picos controlados de demanda durante el periodo evaluado.'
   });
@@ -372,12 +421,15 @@ function getSampleSlide12() {
     titulo: 'Yauricocha - Abril 2026 - Incidentes vs Requerimientos',
     periodo: 'Abril 2026',
     logoText: 'COMM',
+
     totalAtenciones: 137,
     incidentes: 39,
     requerimientos: 98,
     brecha: 59,
+
     pctIncidentes: '28.47%',
     pctRequerimientos: '71.53%',
+
     tabla: {
       up: 'TOTAL',
       incidentes: 39,
@@ -387,6 +439,7 @@ function getSampleSlide12() {
       pctRequerimientos: '71.53%',
       pctTotal: '100%'
     },
+
     insight:
       'La mayoría de las atenciones corresponden a requerimientos, evidenciando prioridad de gestión en actividades planificadas frente a incidencias.'
   });
@@ -401,8 +454,10 @@ function getSampleSlide14() {
     titulo: 'Yauricocha - Abril 2026 - Top 10 Requerimientos',
     periodo: 'Abril 2026',
     logoText: 'COMM',
+
     totalRequerimientos: 96,
     totalTiempoHoras: 195,
+
     items: [
       { nombre: 'Mantenimiento Programado (DAT)', cantidad: 49, tiempoHoras: 99 },
       { nombre: 'Instalación Nueva (CCTV)', cantidad: 15, tiempoHoras: 34 },
@@ -415,6 +470,7 @@ function getSampleSlide14() {
       { nombre: 'Instalación Nueva (GEO)', cantidad: 2, tiempoHoras: 5 },
       { nombre: 'Instalación Nueva (FO)', cantidad: 1, tiempoHoras: 2 }
     ],
+
     insight:
       'La mayor incidencia se concentra en Mantenimiento Programado (DAT).'
   });
@@ -429,8 +485,10 @@ function getSampleSlide15() {
     titulo: 'Yauricocha - Abril 2026 - Top 10 Incidentes',
     periodo: 'Abril 2026',
     logoText: 'COMM',
+
     totalIncidentes: 39,
     totalTiempoHoras: 116,
+
     items: [
       { nombre: 'Sin señal de comunicación', cantidad: 11, tiempoHoras: 32 },
       { nombre: 'Equipo de radio averiado', cantidad: 8, tiempoHoras: 24 },
@@ -443,6 +501,7 @@ function getSampleSlide15() {
       { nombre: 'Baja intensidad de señal', cantidad: 1, tiempoHoras: 4 },
       { nombre: 'Reinicio de equipo de comunicación', cantidad: 1, tiempoHoras: 3 }
     ],
+
     insight:
       'La mayor incidencia se concentra en Sin señal de comunicación.'
   });
@@ -457,7 +516,9 @@ function getSampleSlide17() {
     titulo: 'Yauricocha - Abril 2026 - Top Suministros General',
     periodo: 'Abril 2026',
     logoText: 'COMM',
+
     totalSuministros: 318,
+
     items: [
       { nombre: 'Cable UTP', unidad: 'mts', requerimientos: 80, incidentes: 30, cantidad: 110 },
       { nombre: 'Conector RJ45', unidad: 'UN', requerimientos: 45, incidentes: 22, cantidad: 67 },
@@ -469,6 +530,7 @@ function getSampleSlide17() {
       { nombre: 'Balun CCTV', unidad: 'UN', requerimientos: 2, incidentes: 1, cantidad: 3 },
       { nombre: 'Caja de paso', unidad: 'UN', requerimientos: 1, incidentes: 0, cantidad: 1 }
     ],
+
     insight:
       'El suministro de mayor uso corresponde a Cable UTP.'
   });
@@ -483,7 +545,9 @@ function getSampleSlide18() {
     titulo: 'Yauricocha - Abril 2026 - Suministros en Requerimientos',
     periodo: 'Abril 2026',
     logoText: 'COMM',
+
     totalSuministrosRequerimientos: 224,
+
     items: [
       { nombre: 'Cable UTP', unidad: 'mts', cantidad: 80 },
       { nombre: 'Conector RJ45', unidad: 'UN', cantidad: 45 },
@@ -495,8 +559,37 @@ function getSampleSlide18() {
       { nombre: 'Balun CCTV', unidad: 'UN', cantidad: 2 },
       { nombre: 'Caja de paso', unidad: 'UN', cantidad: 1 }
     ],
+
     insight:
       'El suministro de mayor uso en requerimientos corresponde a Cable UTP.'
+  });
+}
+
+/****************************************************
+ * DATOS DE PRUEBA - SLIDE 19
+ ****************************************************/
+
+function getSampleSlide19() {
+  return normalizeSlide19Data({
+    titulo: 'Yauricocha - Abril 2026 - Suministros en Incidentes',
+    periodo: 'Abril 2026',
+    logoText: 'COMM',
+
+    totalSuministrosIncidentes: 94,
+
+    items: [
+      { nombre: 'Cable UTP', unidad: 'mts', cantidad: 30 },
+      { nombre: 'Conector RJ45', unidad: 'UN', cantidad: 22 },
+      { nombre: 'Cintillos', unidad: 'UN', cantidad: 16 },
+      { nombre: 'Canaleta', unidad: 'mts', cantidad: 10 },
+      { nombre: 'Cinta aislante', unidad: 'UN', cantidad: 8 },
+      { nombre: 'Patch cord', unidad: 'UN', cantidad: 4 },
+      { nombre: 'Fuente 12V', unidad: 'UN', cantidad: 3 },
+      { nombre: 'Balun CCTV', unidad: 'UN', cantidad: 1 }
+    ],
+
+    insight:
+      'El suministro de mayor uso en incidentes corresponde a Cable UTP.'
   });
 }
 
@@ -544,8 +637,10 @@ function normalizeSlide10Data(body) {
     titulo:
       body.titulo ||
       `ATENCIONES EN LA OPERACIÓN YAURICOCHA - ${body.periodo || 'PERIODO'}`,
+
     periodo: body.periodo || 'Periodo',
     logoText: body.logoText || 'COMM',
+
     diasPeriodo: toNumber(body.diasPeriodo) || diasConAtencion,
     totalAtenciones,
     totalHoras,
@@ -553,7 +648,9 @@ function normalizeSlide10Data(body) {
     promedioHorasDia,
     horasPorAtencion,
     diasConAtencion,
+
     dias: cleanedDias,
+
     insight:
       body.insight ||
       'La distribución diaria evidencia estabilidad operativa y picos controlados de demanda durante el periodo evaluado.'
@@ -615,17 +712,23 @@ function normalizeSlide12Data(body) {
     titulo:
       body.titulo ||
       `Yauricocha - ${body.periodo || 'Periodo'} - Incidentes vs Requerimientos`,
+
     periodo: body.periodo || 'Periodo',
     logoText: body.logoText || 'COMM',
+
     totalAtenciones: total,
     incidentes,
     requerimientos,
     brecha,
+
     pctIncidentes,
     pctRequerimientos,
+
     donutIncidentes: incidentes,
     donutRequerimientos: requerimientos,
+
     tabla,
+
     insight:
       body.insight ||
       'La mayoría de las atenciones corresponden a requerimientos, evidenciando prioridad de gestión en actividades planificadas frente a incidencias.'
@@ -710,15 +813,20 @@ function normalizeSlide14Data(body) {
     titulo:
       body.titulo ||
       `Yauricocha - ${body.periodo || 'Periodo'} - Top 10 Requerimientos`,
+
     periodo: body.periodo || 'Periodo',
     logoText: body.logoText || 'COMM',
+
     totalRequerimientos,
     totalTop10,
     totalTiempoHoras,
+
     pctTop2: body.pctTop2 || calcPct(top2Cantidad, totalRequerimientos),
     pctTop3: body.pctTop3 || calcPct(top3Cantidad, totalRequerimientos),
     pctTop10: body.pctTop10 || calcPct(totalTop10, totalRequerimientos),
+
     items,
+
     insight:
       body.insight ||
       `La mayor incidencia se concentra en ${top1.nombre}.`
@@ -767,15 +875,20 @@ function normalizeSlide15Data(body) {
     titulo:
       body.titulo ||
       `Yauricocha - ${body.periodo || 'Periodo'} - Top 10 Incidentes`,
+
     periodo: body.periodo || 'Periodo',
     logoText: body.logoText || 'COMM',
+
     totalIncidentes,
     totalTop10,
     totalTiempoHoras,
+
     pctTop2: body.pctTop2 || calcPct(top2Cantidad, totalIncidentes),
     pctTop3: body.pctTop3 || calcPct(top3Cantidad, totalIncidentes),
     pctTop10: body.pctTop10 || calcPct(totalTop10, totalIncidentes),
+
     items,
+
     insight:
       body.insight ||
       `La mayor incidencia se concentra en ${top1.nombre}.`
@@ -822,14 +935,19 @@ function normalizeSlide17Data(body) {
     titulo:
       body.titulo ||
       `Yauricocha - ${body.periodo || 'Periodo'} - Top Suministros General`,
+
     periodo: body.periodo || 'Periodo',
     logoText: body.logoText || 'COMM',
+
     totalSuministros,
     totalTop10,
+
     pctTop2: body.pctTop2 || calcPct(top2Cantidad, totalSuministros),
     pctTop3: body.pctTop3 || calcPct(top3Cantidad, totalSuministros),
     pctTop10: body.pctTop10 || calcPct(totalTop10, totalSuministros),
+
     items,
+
     insight:
       body.insight ||
       `El suministro de mayor uso corresponde a ${top1.nombre}.`
@@ -878,18 +996,85 @@ function normalizeSlide18Data(body) {
     titulo:
       body.titulo ||
       `Yauricocha - ${body.periodo || 'Periodo'} - Suministros en Requerimientos`,
+
     periodo: body.periodo || 'Periodo',
     logoText: body.logoText || 'COMM',
+
     totalSuministrosRequerimientos,
     totalSuministros: totalSuministrosRequerimientos,
     totalTop10,
+
     pctTop2: body.pctTop2 || calcPct(top2Cantidad, totalSuministrosRequerimientos),
     pctTop3: body.pctTop3 || calcPct(top3Cantidad, totalSuministrosRequerimientos),
     pctTop10: body.pctTop10 || calcPct(totalTop10, totalSuministrosRequerimientos),
+
     items,
+
     insight:
       body.insight ||
       `El suministro de mayor uso en requerimientos corresponde a ${top1.nombre}.`
+  };
+}
+
+/****************************************************
+ * NORMALIZAR DATOS - SLIDE 19
+ ****************************************************/
+
+function normalizeSlide19Data(body) {
+  const rawItems = Array.isArray(body.items)
+    ? body.items
+    : Array.isArray(body.topSuministrosIncidentes)
+      ? body.topSuministrosIncidentes
+      : [];
+
+  let items = normalizeSuministroSimpleItems(rawItems);
+
+  const totalTop10 = items.reduce((acc, item) => acc + item.cantidad, 0);
+
+  const totalSuministrosIncidentes =
+    toNumber(
+      body.totalSuministrosIncidentes ??
+      body.totalSuministros ??
+      body.total ??
+      0
+    ) || totalTop10;
+
+  items = items.map(item => ({
+    ...item,
+    porcentaje: item.porcentaje || calcPct(item.cantidad, totalSuministrosIncidentes)
+  }));
+
+  const top1 = items[0] || {
+    nombre: '-',
+    unidad: '-',
+    cantidad: 0,
+    porcentaje: '0.00%'
+  };
+
+  const top2Cantidad = items.slice(0, 2).reduce((acc, item) => acc + item.cantidad, 0);
+  const top3Cantidad = items.slice(0, 3).reduce((acc, item) => acc + item.cantidad, 0);
+
+  return {
+    titulo:
+      body.titulo ||
+      `Yauricocha - ${body.periodo || 'Periodo'} - Suministros en Incidentes`,
+
+    periodo: body.periodo || 'Periodo',
+    logoText: body.logoText || 'COMM',
+
+    totalSuministrosIncidentes,
+    totalSuministros: totalSuministrosIncidentes,
+    totalTop10,
+
+    pctTop2: body.pctTop2 || calcPct(top2Cantidad, totalSuministrosIncidentes),
+    pctTop3: body.pctTop3 || calcPct(top3Cantidad, totalSuministrosIncidentes),
+    pctTop10: body.pctTop10 || calcPct(totalTop10, totalSuministrosIncidentes),
+
+    items,
+
+    insight:
+      body.insight ||
+      `El suministro de mayor uso en incidentes corresponde a ${top1.nombre}.`
   };
 }
 
@@ -957,12 +1142,14 @@ function normalizeSuministroItems(rawItems) {
           item.material ||
           ''
         ).trim(),
+
         unidad: String(
           item.unidad ||
           item.um ||
           item.medida ||
           '-'
         ).trim(),
+
         requerimientos: req,
         incidentes: inc,
         cantidad: total
@@ -993,12 +1180,14 @@ function normalizeSuministroSimpleItems(rawItems) {
           item.material ||
           ''
         ).trim(),
+
         unidad: String(
           item.unidad ||
           item.um ||
           item.medida ||
           '-'
         ).trim(),
+
         cantidad: toNumber(item.cantidad ?? item.total ?? item.valor ?? 0)
       };
     })
