@@ -6,134 +6,301 @@
   <link rel="stylesheet" href="/public/styles.css" />
 
   <style>
-    .slide10-kpi-row {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 18px;
-      margin-top: 24px;
-    }
-
-    .slide10-content {
-      display: grid;
-      grid-template-columns: 1.45fr 0.55fr;
-      gap: 24px;
-      margin-top: 28px;
-    }
-
-    .chart-panel {
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
       background: #ffffff;
-      border: 1px solid #d6e2f2;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(9, 45, 88, 0.08);
-      overflow: hidden;
-      min-height: 385px;
     }
 
-    .chart-header {
-      background: linear-gradient(90deg, #0b3f9f 0%, #0b53d0 55%, #11b8c7 100%);
-      color: white;
-      font-size: 20px;
-      font-weight: 800;
-      padding: 16px 22px;
+    .canvas {
+      width: 1600px;
+      height: 900px;
+      padding: 18px 26px;
+      background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .corner-ribbon {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 310px;
+      height: 80px;
+      background: linear-gradient(135deg, #06328f, #0b63df);
+      border-bottom-left-radius: 110px;
+      z-index: 0;
+    }
+
+    .slide-title-row {
+      position: relative;
+      z-index: 2;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-bottom: 18px;
     }
 
-    .chart-subtitle {
-      font-size: 13px;
-      font-weight: 500;
-      opacity: 0.9;
+    .title-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
 
-    .chart-body {
-      padding: 20px 26px 22px 26px;
-      height: 330px;
+    .title-accent {
+      width: 12px;
+      height: 52px;
+      background: #145fe0;
+      border-radius: 4px;
     }
 
-    .side-panel {
+    .main-title {
+      font-size: 38px;
+      font-weight: 900;
+      color: #062a63;
+      letter-spacing: 0.2px;
+      margin: 0;
+      text-transform: uppercase;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: white;
+      font-size: 36px;
+      font-weight: 900;
+      z-index: 3;
+      padding-right: 24px;
+    }
+
+    .logo-dot {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #55d9ff, #0b4fc7);
+      border: 3px solid rgba(255,255,255,0.75);
+    }
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .kpi {
+      height: 106px;
       background: #ffffff;
       border: 1px solid #d6e2f2;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(9, 45, 88, 0.08);
+      border-radius: 14px;
+      box-shadow: 0 6px 14px rgba(10, 45, 91, 0.13);
+      padding: 16px 16px;
+      display: grid;
+      grid-template-columns: 74px 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .kpi-icon {
+      width: 68px;
+      height: 68px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 31px;
+      font-weight: 900;
+    }
+
+    .blue { background: linear-gradient(135deg, #0b5ed7, #0640a5); }
+    .teal { background: linear-gradient(135deg, #08b9bd, #07878f); }
+    .orange { background: linear-gradient(135deg, #ffb000, #ff6200); }
+    .purple { background: linear-gradient(135deg, #8d48e8, #6125c9); }
+
+    .kpi-label {
+      font-size: 13px;
+      line-height: 1.15;
+      color: #08275c;
+      font-weight: 900;
+      text-transform: uppercase;
+      min-height: 31px;
+    }
+
+    .kpi-value {
+      font-size: 40px;
+      font-weight: 900;
+      line-height: 1;
+      margin-top: 4px;
+    }
+
+    .value-blue { color: #145fe0; }
+    .value-teal { color: #07939b; }
+    .value-orange { color: #ff6200; }
+    .value-purple { color: #6f35d8; }
+
+    .main-chart {
+      height: 455px;
+      background: #ffffff;
+      border: 1px solid #d6e2f2;
+      border-radius: 16px;
+      box-shadow: 0 7px 18px rgba(10, 45, 91, 0.13);
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .chart-title {
+      height: 40px;
+      background: linear-gradient(90deg, #0b3298 0%, #0b5ed7 55%, #12b8c8 100%);
+      color: white;
+      font-size: 19px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      text-transform: uppercase;
+    }
+
+    .chart-area {
+      height: 415px;
+      padding: 18px 26px 10px 26px;
+    }
+
+    .bottom-row {
+      display: grid;
+      grid-template-columns: 1fr 0.62fr 1.02fr;
+      gap: 20px;
+      height: 150px;
+    }
+
+    .bottom-card {
+      background: #ffffff;
+      border: 1px solid #0b5ed7;
+      border-radius: 14px;
+      box-shadow: 0 5px 13px rgba(10, 45, 91, 0.10);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
       overflow: hidden;
     }
 
-    .side-header {
-      background: linear-gradient(90deg, #062a63 0%, #0b53d0 100%);
+    .bottom-card.teal-border {
+      border-color: #13aeb5;
+    }
+
+    .bottom-card.dark {
+      background: linear-gradient(120deg, #06328f 0%, #0c62d9 55%, #12b8c8 100%);
+      border-color: transparent;
       color: white;
-      font-size: 18px;
-      font-weight: 800;
-      padding: 16px 20px;
+      display: block;
+      padding: 18px 26px;
     }
 
-    .side-body {
-      padding: 22px;
+    .big-icon {
+      width: 82px;
+      height: 82px;
+      border-radius: 17px;
+      color: white;
+      font-size: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, #0b5ed7, #13b7c3);
     }
 
-    .mini-card {
-      border: 1px solid #d6e2f2;
-      border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 16px;
-      background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
-    }
-
-    .mini-title {
-      font-size: 13px;
-      color: #60718a;
-      font-weight: 700;
+    .bottom-title {
+      font-size: 21px;
+      font-weight: 900;
+      color: #0b3298;
       margin-bottom: 8px;
     }
 
-    .mini-value {
-      font-size: 30px;
-      color: #0b53d0;
-      font-weight: 900;
-      line-height: 1;
-    }
-
-    .mini-desc {
-      font-size: 13px;
-      color: #21324e;
-      margin-top: 8px;
-      line-height: 1.35;
-    }
-
-    .slide10-insight-row {
-      margin-top: 24px;
-      display: grid;
-      grid-template-columns: 90px 300px 2px 1fr;
-      align-items: center;
-      gap: 18px;
-      background: #ffffff;
-      border: 1px solid #cfe0f5;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(9, 45, 88, 0.08);
-      padding: 18px 22px;
-    }
-
-    .legend-svg-text {
-      font-size: 18px;
-      fill: #203250;
-      font-weight: 700;
-    }
-
-    .axis-text {
+    .bottom-desc {
       font-size: 15px;
-      fill: #60718a;
-      font-weight: 600;
+      line-height: 1.45;
+      color: #0a2354;
     }
 
-    .bar-label {
-      font-size: 13px;
-      fill: #0b2148;
+    .data-list {
+      font-size: 17px;
+      color: #08275c;
+      line-height: 1.5;
+    }
+
+    .data-list b {
+      color: #0b3298;
+      float: right;
+      padding-left: 40px;
+    }
+
+    .insights-title {
+      color: white;
+      font-size: 22px;
+      font-weight: 900;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+
+    .insight-line {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      align-items: center;
+      gap: 12px;
+      font-size: 15.5px;
+      line-height: 1.35;
+      margin-bottom: 12px;
+      border-bottom: 1px dashed rgba(255,255,255,0.35);
+      padding-bottom: 9px;
+    }
+
+    .insight-line:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .small-badge {
+      width: 31px;
+      height: 31px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.95);
+      color: #0b5ed7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .axis-label {
+      font-size: 14px;
+      fill: #08275c;
+      font-weight: 800;
+    }
+
+    .date-label {
+      font-size: 11px;
+      fill: #08275c;
       font-weight: 700;
     }
 
-    .line-label {
+    .bar-num-dark {
       font-size: 13px;
-      fill: #ff6a00;
+      fill: #ffffff;
+      font-weight: 900;
+    }
+
+    .bar-num-light {
+      font-size: 13px;
+      fill: #071b3a;
+      font-weight: 900;
+    }
+
+    .legend-text {
+      font-size: 15px;
+      fill: #08275c;
       font-weight: 800;
     }
   </style>
@@ -141,238 +308,190 @@
 
 <body>
 <%
-  const fallbackDaily = [
-    { dia: '01', atenciones: 4, horas: 18 },
-    { dia: '02', atenciones: 6, horas: 22 },
-    { dia: '03', atenciones: 5, horas: 20 },
-    { dia: '04', atenciones: 9, horas: 31 },
-    { dia: '05', atenciones: 7, horas: 26 },
-    { dia: '06', atenciones: 3, horas: 14 },
-    { dia: '07', atenciones: 8, horas: 29 },
-    { dia: '08', atenciones: 10, horas: 36 },
-    { dia: '09', atenciones: 6, horas: 24 },
-    { dia: '10', atenciones: 5, horas: 19 },
-    { dia: '11', atenciones: 11, horas: 39 },
-    { dia: '12', atenciones: 7, horas: 27 },
-    { dia: '13', atenciones: 4, horas: 16 },
-    { dia: '14', atenciones: 9, horas: 34 }
-  ];
+  const data = Array.isArray(dias) && dias.length ? dias : [];
+  const totalAt = Number(totalAtenciones || 0);
+  const totalHr = Number(totalHoras || 0);
+  const diasCount = Number(diasConAtencion || data.length || 0);
 
-  const daily = typeof dias !== 'undefined' && Array.isArray(dias) && dias.length ? dias : fallbackDaily;
+  const promAt = promedioAtencionesDia || (diasCount ? (totalAt / diasCount).toFixed(1) : '0.0');
+  const promHr = promedioHorasDia || (diasCount ? (totalHr / diasCount).toFixed(1) : '0.0');
+  const hpa = horasPorAtencion || (totalAt ? (totalHr / totalAt).toFixed(2) : '0.00');
 
-  const maxAtenciones = Math.max(...daily.map(d => Number(d.atenciones) || 0), 1);
-  const maxHoras = Math.max(...daily.map(d => Number(d.horas) || 0), 1);
+  const maxStack = Math.max(...data.map(d => (Number(d.atenciones)||0) + (Number(d.horas)||0)), 1);
 
-  const chartW = 920;
-  const chartH = 260;
-  const baseY = 250;
-  const leftPad = 55;
-  const topPad = 25;
-  const usableW = chartW - leftPad - 25;
-  const usableH = 205;
-  const gap = usableW / daily.length;
-  const barW = Math.min(28, gap * 0.5);
+  const chartW = 1480;
+  const chartH = 340;
+  const left = 60;
+  const top = 20;
+  const base = 270;
+  const usableW = 1365;
+  const usableH = 230;
+  const gap = data.length ? usableW / data.length : usableW;
+  const barW = Math.min(34, gap * 0.62);
 
-  function yAtenciones(v) {
-    return baseY - ((Number(v) || 0) / maxAtenciones) * usableH;
-  }
+  const yScale = v => base - (Number(v) / maxStack) * usableH;
 
-  function yHoras(v) {
-    return baseY - ((Number(v) || 0) / maxHoras) * usableH;
-  }
-
-  const linePoints = daily.map((d, i) => {
-    const x = leftPad + i * gap + gap / 2;
-    const y = yHoras(d.horas);
-    return `${x},${y}`;
-  }).join(' ');
-
-  const totalAt = typeof totalAtenciones !== 'undefined' ? totalAtenciones : daily.reduce((a, d) => a + (Number(d.atenciones) || 0), 0);
-  const totalHr = typeof totalHoras !== 'undefined' ? totalHoras : daily.reduce((a, d) => a + (Number(d.horas) || 0), 0);
-  const promAt = typeof promedioAtencionesDia !== 'undefined' ? promedioAtencionesDia : (totalAt / daily.length).toFixed(1);
-  const promHr = typeof promedioHorasDia !== 'undefined' ? promedioHorasDia : (totalHr / daily.length).toFixed(1);
-
-  const diaTopObj = daily.reduce((max, d) => (Number(d.atenciones) || 0) > (Number(max.atenciones) || 0) ? d : max, daily[0]);
-  const diaTop = typeof diaMayorAtencion !== 'undefined' ? diaMayorAtencion : diaTopObj.dia;
-  const diasActivos = typeof diasConAtencion !== 'undefined' ? diasConAtencion : daily.filter(d => Number(d.atenciones) > 0).length;
-
-  const insightFinal = typeof insight !== 'undefined' && insight
-    ? insight
-    : 'La distribución diaria evidencia concentración operativa en jornadas específicas, permitiendo priorizar recursos y reforzar la planificación de atenciones.';
+  const insightsFinal = Array.isArray(insights) && insights.length
+    ? insights
+    : [
+      insight || 'Volumen total significativo de actividad operativa.',
+      'Estabilidad operativa con picos controlados de demanda.',
+      'Monitoreo continuo para mantener la calidad del servicio.'
+    ];
 %>
 
-  <div class="canvas">
-    <div class="card-main">
+<div class="canvas">
+  <div class="corner-ribbon"></div>
 
-      <div class="topbar">
-        <div class="title-wrap">
-          <div class="title-accent"></div>
-          <h1><%= titulo || 'Yauricocha - Abril 2026 - Atenciones y Horas por Día' %></h1>
-        </div>
+  <div class="slide-title-row">
+    <div class="title-left">
+      <div class="title-accent"></div>
+      <h1 class="main-title"><%= titulo || 'ATENCIONES EN LA OPERACIÓN YAURICOCHA - PERIODO' %></h1>
+    </div>
 
-        <div class="logo-wrap">
-          <div class="logo-circle"></div>
-          <div class="logo-text"><%= logoText || 'COMM' %></div>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="slide10-kpi-row">
-        <div class="kpi kpi-blue">
-          <div class="kpi-icon">👥</div>
-          <div class="kpi-text">
-            <div class="kpi-label">TOTAL ATENCIONES</div>
-            <div class="kpi-value"><%= totalAt %></div>
-            <div class="kpi-sub">Atenciones del periodo</div>
-          </div>
-        </div>
-
-        <div class="kpi kpi-teal">
-          <div class="kpi-icon">⏱</div>
-          <div class="kpi-text">
-            <div class="kpi-label">TOTAL HORAS</div>
-            <div class="kpi-value"><%= totalHr %></div>
-            <div class="kpi-sub">Horas registradas</div>
-          </div>
-        </div>
-
-        <div class="kpi kpi-orange">
-          <div class="kpi-icon">📊</div>
-          <div class="kpi-text">
-            <div class="kpi-label">PROM. ATENCIONES/DÍA</div>
-            <div class="kpi-value"><%= promAt %></div>
-            <div class="kpi-sub">Promedio diario</div>
-          </div>
-        </div>
-
-        <div class="kpi kpi-purple">
-          <div class="kpi-icon">⌛</div>
-          <div class="kpi-text">
-            <div class="kpi-label">PROM. HORAS/DÍA</div>
-            <div class="kpi-value"><%= promHr %></div>
-            <div class="kpi-sub">Intensidad diaria</div>
-          </div>
-        </div>
-
-        <div class="kpi kpi-cyan">
-          <div class="kpi-icon">📅</div>
-          <div class="kpi-text">
-            <div class="kpi-label">DÍA CON MAYOR ATENCIÓN</div>
-            <div class="kpi-value"><%= diaTop %></div>
-            <div class="kpi-sub">Mayor carga operativa</div>
-          </div>
-        </div>
-
-        <div class="kpi kpi-blue">
-          <div class="kpi-icon">✅</div>
-          <div class="kpi-text">
-            <div class="kpi-label">DÍAS ACTIVOS</div>
-            <div class="kpi-value"><%= diasActivos %></div>
-            <div class="kpi-sub">Días con atenciones</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="slide10-content">
-        <div class="chart-panel">
-          <div class="chart-header">
-            <span>ATENCIONES Y HORAS POR DÍA</span>
-            <span class="chart-subtitle">Atenciones realizadas vs horas empleadas</span>
-          </div>
-
-          <div class="chart-body">
-            <svg width="100%" height="100%" viewBox="0 0 920 280" preserveAspectRatio="none">
-
-              <line x1="55" y1="250" x2="900" y2="250" stroke="#c8d8ef" stroke-width="2" />
-              <line x1="55" y1="25" x2="55" y2="250" stroke="#c8d8ef" stroke-width="2" />
-
-              <line x1="55" y1="200" x2="900" y2="200" stroke="#e7eef8" stroke-width="1" />
-              <line x1="55" y1="150" x2="900" y2="150" stroke="#e7eef8" stroke-width="1" />
-              <line x1="55" y1="100" x2="900" y2="100" stroke="#e7eef8" stroke-width="1" />
-              <line x1="55" y1="50" x2="900" y2="50" stroke="#e7eef8" stroke-width="1" />
-
-              <text x="10" y="255" class="axis-text">0</text>
-              <text x="8" y="155" class="axis-text">Med.</text>
-              <text x="8" y="55" class="axis-text">Max.</text>
-
-              <% daily.forEach((d, i) => {
-                const xCenter = leftPad + i * gap + gap / 2;
-                const barH = ((Number(d.atenciones) || 0) / maxAtenciones) * usableH;
-                const y = baseY - barH;
-                const x = xCenter - barW / 2;
-              %>
-                <rect x="<%= x %>" y="<%= y %>" width="<%= barW %>" height="<%= barH %>" rx="7" fill="#1f6fe5" opacity="0.92" />
-                <text x="<%= xCenter %>" y="<%= y - 7 %>" text-anchor="middle" class="bar-label"><%= d.atenciones %></text>
-                <text x="<%= xCenter %>" y="272" text-anchor="middle" class="axis-text"><%= d.dia %></text>
-              <% }) %>
-
-              <polyline
-                points="<%= linePoints %>"
-                fill="none"
-                stroke="#ff6a00"
-                stroke-width="5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-
-              <% daily.forEach((d, i) => {
-                const xCenter = leftPad + i * gap + gap / 2;
-                const y = yHoras(d.horas);
-              %>
-                <circle cx="<%= xCenter %>" cy="<%= y %>" r="7" fill="#ff6a00" stroke="#ffffff" stroke-width="3" />
-              <% }) %>
-
-              <rect x="610" y="10" width="18" height="18" rx="4" fill="#1f6fe5" />
-              <text x="636" y="25" class="legend-svg-text">Atenciones</text>
-
-              <circle cx="765" cy="20" r="9" fill="#ff6a00" />
-              <text x="782" y="25" class="legend-svg-text">Horas</text>
-            </svg>
-          </div>
-        </div>
-
-        <div class="side-panel">
-          <div class="side-header">
-            RESUMEN OPERATIVO
-          </div>
-
-          <div class="side-body">
-            <div class="mini-card">
-              <div class="mini-title">DÍA DE MAYOR CARGA</div>
-              <div class="mini-value"><%= diaTop %></div>
-              <div class="mini-desc">
-                Concentración de atenciones superior al promedio diario.
-              </div>
-            </div>
-
-            <div class="mini-card">
-              <div class="mini-title">INTENSIDAD OPERATIVA</div>
-              <div class="mini-value"><%= promHr %> h</div>
-              <div class="mini-desc">
-                Promedio de horas dedicadas por día activo del periodo.
-              </div>
-            </div>
-
-            <div class="mini-card">
-              <div class="mini-title">COBERTURA DEL PERIODO</div>
-              <div class="mini-value"><%= diasActivos %></div>
-              <div class="mini-desc">
-                Días con registro de atención dentro del mes seleccionado.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="slide10-insight-row">
-        <div class="insight-icon">🎯</div>
-        <div class="insight-title">LECTURA EJECUTIVA DEL COMPORTAMIENTO DIARIO</div>
-        <div class="insight-divider"></div>
-        <div class="insight-text"><%= insightFinal %></div>
-      </div>
-
+    <div class="logo-area">
+      <div class="logo-dot"></div>
+      <div><%= logoText || 'COMM' %></div>
     </div>
   </div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-icon blue">▣</div>
+      <div>
+        <div class="kpi-label">DÍAS</div>
+        <div class="kpi-value value-blue"><%= diasCount %></div>
+      </div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-icon teal">●●●</div>
+      <div>
+        <div class="kpi-label">ATENCIONES</div>
+        <div class="kpi-value value-teal"><%= totalAt %></div>
+      </div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-icon blue">◷</div>
+      <div>
+        <div class="kpi-label">HORAS</div>
+        <div class="kpi-value value-blue"><%= totalHr %></div>
+      </div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-icon orange">▥</div>
+      <div>
+        <div class="kpi-label">PROMEDIO DE ATENCIONES POR DÍA</div>
+        <div class="kpi-value value-orange"><%= promAt %></div>
+      </div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-icon purple">◷</div>
+      <div>
+        <div class="kpi-label">PROMEDIO DE HORAS POR DÍA</div>
+        <div class="kpi-value value-purple"><%= promHr %></div>
+      </div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-icon teal">▦</div>
+      <div>
+        <div class="kpi-label">HORAS POR ATENCIÓN</div>
+        <div class="kpi-value value-teal"><%= hpa %></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-chart">
+    <div class="chart-title">ATENCIONES Y HORAS DIARIAS - <%= periodo || '' %></div>
+
+    <div class="chart-area">
+      <svg width="100%" height="100%" viewBox="0 0 1480 360" preserveAspectRatio="none">
+
+        <text x="16" y="170" transform="rotate(-90 16,170)" class="axis-label">CANTIDAD</text>
+
+        <% [0, 0.25, 0.5, 0.75, 1].forEach((p, idx) => {
+          const y = base - p * usableH;
+          const val = Math.round(maxStack * p);
+        %>
+          <line x1="<%= left %>" y1="<%= y %>" x2="1455" y2="<%= y %>" stroke="#dce6f3" stroke-width="1" stroke-dasharray="4 4" />
+          <text x="28" y="<%= y + 5 %>" class="axis-label"><%= val %></text>
+        <% }) %>
+
+        <% data.forEach((d, i) => {
+          const at = Number(d.atenciones) || 0;
+          const hr = Number(d.horas) || 0;
+          const xCenter = left + i * gap + gap / 2;
+          const x = xCenter - barW / 2;
+
+          const atH = (at / maxStack) * usableH;
+          const hrH = (hr / maxStack) * usableH;
+
+          const yAt = base - atH;
+          const yHr = yAt - hrH;
+
+          const fechaLabel = d.fecha || d.dia || '';
+        %>
+          <rect x="<%= x %>" y="<%= yAt %>" width="<%= barW %>" height="<%= atH %>" fill="#073fb4" rx="2" />
+          <rect x="<%= x %>" y="<%= yHr %>" width="<%= barW %>" height="<%= hrH %>" fill="#a9c9ff" rx="2" />
+
+          <% if (atH > 16) { %>
+            <text x="<%= xCenter %>" y="<%= yAt + atH / 2 + 5 %>" text-anchor="middle" class="bar-num-dark"><%= at %></text>
+          <% } %>
+
+          <% if (hrH > 16) { %>
+            <text x="<%= xCenter %>" y="<%= yHr + hrH / 2 + 5 %>" text-anchor="middle" class="bar-num-light"><%= hr %></text>
+          <% } %>
+
+          <text x="<%= xCenter - 2 %>" y="315" text-anchor="end" transform="rotate(-45 <%= xCenter %>,315)" class="date-label"><%= fechaLabel %></text>
+        <% }) %>
+
+        <rect x="620" y="330" width="14" height="14" fill="#073fb4" />
+        <text x="642" y="342" class="legend-text">Atenciones</text>
+
+        <rect x="780" y="330" width="14" height="14" fill="#a9c9ff" />
+        <text x="802" y="342" class="legend-text">Horas</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="bottom-row">
+    <div class="bottom-card">
+      <div class="big-icon">↗</div>
+      <div>
+        <div class="bottom-title">Tendencia de Atenciones Diarias</div>
+        <div class="bottom-desc">
+          Distribución diaria de atenciones, mostrando estabilidad operativa y picos controlados de demanda a lo largo del mes.
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-card teal-border">
+      <div class="big-icon">▤</div>
+      <div style="width:100%;">
+        <div class="bottom-title">Datos de Atenciones Diarias</div>
+        <div class="data-list">
+          DÍAS: <b><%= diasCount %></b><br>
+          ATENCIONES: <b><%= totalAt %></b><br>
+          HORAS: <b><%= totalHr %></b>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-card dark">
+      <div class="insights-title">INSIGHTS EJECUTIVOS</div>
+
+      <% insightsFinal.slice(0,3).forEach((txt, idx) => { %>
+        <div class="insight-line">
+          <div class="small-badge"><%= idx === 0 ? '●' : idx === 1 ? '✓' : '⌕' %></div>
+          <div><%= txt %></div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</div>
 </body>
 </html>
