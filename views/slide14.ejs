@@ -377,7 +377,7 @@
 
     .x-label {
       fill: #08245c;
-      font-size: 13px;
+      font-size: 10.5px;
       font-weight: 900;
     }
   </style>
@@ -409,6 +409,32 @@
   function cortar(txt, n) {
     txt = String(txt || '');
     return txt.length > n ? txt.substring(0, n - 3) + '...' : txt;
+  }
+
+  function labelLines(txt) {
+    txt = String(txt || '').trim();
+
+    const words = txt.split(/\s+/);
+    const lines = [];
+    let current = '';
+
+    words.forEach(word => {
+      if ((current + ' ' + word).trim().length <= 13) {
+        current = (current + ' ' + word).trim();
+      } else {
+        if (current) lines.push(current);
+        current = word;
+      }
+    });
+
+    if (current) lines.push(current);
+
+    if (lines.length > 3) {
+      lines.length = 3;
+      lines[2] = lines[2].substring(0, 10) + '...';
+    }
+
+    return lines;
   }
 
   const totalReq = num(
@@ -475,7 +501,7 @@
   const chartLeft = 88;
   const chartTop = 58;
   const chartW = 710;
-  const chartH = 285;
+  const chartH = 260;
   const baseY = chartTop + chartH;
   const gap = processedItems.length ? chartW / processedItems.length : chartW;
   const barW = Math.min(48, gap * 0.45);
@@ -626,15 +652,12 @@
 
           <% processedItems.forEach((item, i) => {
             const xCenter = chartLeft + i * gap + gap / 2;
+            const lines = labelLines(item.nombre);
           %>
-            <text
-              x="<%= xCenter - 2 %>"
-              y="405"
-              text-anchor="end"
-              transform="rotate(-36 <%= xCenter %>,405)"
-              class="x-label"
-            >
-              <%= cortar(item.nombre, 34) %>
+            <text x="<%= xCenter %>" y="354" text-anchor="middle" class="x-label">
+              <% lines.forEach((line, idx) => { %>
+                <tspan x="<%= xCenter %>" dy="<%= idx === 0 ? 0 : 14 %>"><%= line %></tspan>
+              <% }) %>
             </text>
           <% }) %>
         </svg>
