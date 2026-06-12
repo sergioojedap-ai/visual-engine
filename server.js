@@ -18,7 +18,7 @@ app.set('views', path.join(__dirname, 'views'));
  ****************************************************/
 
 app.get('/', (req, res) => {
-  res.redirect('/test-slide11');
+  res.redirect('/test-slide11-png');
 });
 
 app.get('/health', (req, res) => {
@@ -29,380 +29,62 @@ app.get('/health', (req, res) => {
 });
 
 /****************************************************
- * SLIDE 10
+ * REGISTRO DE RUTAS POR SLIDE
  ****************************************************/
 
-app.get('/test-slide10', async (req, res) => {
-  try {
-    const sample = getSampleSlide10();
-    res.render('slide10', sample);
-  } catch (error) {
-    console.error('Error en /test-slide10:', error);
-    res.status(500).send('Error en /test-slide10: ' + error);
-  }
-});
+registerSlide(10, getSampleSlide10, normalizeSlide10Data);
+registerSlide(11, getSampleSlide11, normalizeSlide11Data);
+registerSlide(12, getSampleSlide12, normalizeSlide12Data);
+registerSlide(14, getSampleSlide14, normalizeSlide14Data);
+registerSlide(15, getSampleSlide15, normalizeSlide15Data);
+registerSlide(17, getSampleSlide17, normalizeSlide17Data);
+registerSlide(18, getSampleSlide18, normalizeSlide18Data);
+registerSlide(19, getSampleSlide19, normalizeSlide19Data);
 
-app.get('/test-slide10-png', async (req, res) => {
-  try {
-    const sample = getSampleSlide10();
-    const html = await renderEjsToString('slide10', sample);
-    const imageBuffer = await htmlToPng(html);
+function registerSlide(slideNumber, getSampleData, normalizeData) {
+  app.get(`/test-slide${slideNumber}`, async (req, res) => {
+    try {
+      const sample = getSampleData();
+      res.render(`slide${slideNumber}`, sample);
+    } catch (error) {
+      console.error(`Error en /test-slide${slideNumber}:`, error);
+      res.status(500).send(`Error en /test-slide${slideNumber}: ` + error);
+    }
+  });
 
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Length', imageBuffer.length);
-    res.end(imageBuffer);
-  } catch (error) {
-    console.error('Error generando PNG slide 10:', error);
-    res.status(500).send('Error generando PNG slide 10: ' + error);
-  }
-});
+  app.get(`/test-slide${slideNumber}-png`, async (req, res) => {
+    try {
+      const sample = getSampleData();
+      const html = await renderEjsToString(`slide${slideNumber}`, sample);
+      const imageBuffer = await htmlToPng(html);
 
-app.post('/render/slide10', async (req, res) => {
-  try {
-    const data = normalizeSlide10Data(req.body || {});
-    const html = await renderEjsToString('slide10', data);
-    const imageBuffer = await htmlToPng(html);
+      res.setHeader('Content-Type', 'image/png');
+      res.setHeader('Content-Length', imageBuffer.length);
+      res.end(imageBuffer);
+    } catch (error) {
+      console.error(`Error generando PNG slide ${slideNumber}:`, error);
+      res.status(500).send(`Error generando PNG slide ${slideNumber}: ` + error);
+    }
+  });
 
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Length', imageBuffer.length);
-    res.end(imageBuffer);
-  } catch (error) {
-    console.error('Error renderizando slide10:', error);
-    res.status(500).json({
-      ok: false,
-      error: String(error)
-    });
-  }
-});
+  app.post(`/render/slide${slideNumber}`, async (req, res) => {
+    try {
+      const data = normalizeData(req.body || {});
+      const html = await renderEjsToString(`slide${slideNumber}`, data);
+      const imageBuffer = await htmlToPng(html);
 
-/****************************************************
- * SLIDE 11
- ****************************************************/
-
-app.get('/test-slide11', async (req, res) => {
-  try {
-    const sample = getSampleSlide11();
-    res.render('slide11', sample);
-  } catch (error) {
-    console.error('Error en /test-slide11:', error);
-    res.status(500).send('Error en /test-slide11: ' + error);
-  }
-});
-
-app.get('/test-slide11-png', async (req, res) => {
-  try {
-    const sample = getSampleSlide11();
-    const html = await renderEjsToString('slide11', sample);
-    const imageBuffer = await htmlToPng(html);
-
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Length', imageBuffer.length);
-    res.end(imageBuffer);
-  } catch (error) {
-    console.error('Error generando PNG slide 11:', error);
-    res.status(500).send('Error generando PNG slide 11: ' + error);
-  }
-});
-
-app.post('/render/slide11', async (req, res) => {
-  try {
-    const data = normalizeSlide11Data(req.body || {});
-    const html = await renderEjsToString('slide11', data);
-    const imageBuffer = await htmlToPng(html);
-
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Length', imageBuffer.length);
-    res.end(imageBuffer);
-  } catch (error) {
-    console.error('Error renderizando slide11:', error);
-    res.status(500).json({
-      ok: false,
-      error: String(error)
-    });
-  }
-});
-
-/****************************************************
- * SLIDE 12
- ****************************************************/
-
-app.get('/test-slide12', async (req, res) => {
-  try {
-    const sample = getSampleSlide12();
-    res.render('slide12', sample);
-  } catch (error) {
-    console.error('Error en /test-slide12:', error);
-    res.status(500).send('Error en /test-slide12: ' + error);
-  }
-});
-
-app.get('/test-slide12-png', async (req, res) => {
-  try {
-    const sample = getSampleSlide12();
-    const html = await renderEjsToString('slide12', sample);
-    const imageBuffer = await htmlToPng(html);
-
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Length', imageBuffer.length);
-    res.end(imageBuffer);
-  } catch (error) {
-    console.error('Error generando PNG slide 12:', error);
-    res.status(500).send('Error generando PNG slide 12: ' + error);
-  }
-});
-
-app.post('/render/slide12', async (req, res) => {
-  try {
-    const data = normalizeSlide12Data(req.body || {});
-    const html = await renderEjsToString('slide12', data);
-    const imageBuffer = await htmlToPng(html);
-
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Length', imageBuffer.length);
-    res.end(imageBuffer);
-  } catch (error) {
-    console.error('Error renderizando slide12:', error);
-    res.status(500).json({
-      ok: false,
-      error: String(error)
-    });
-  }
-});
-
-/****************************************************
- * SLIDE 14
- ****************************************************/
-
-app.get('/test-slide14', async (req, res) => {
-  try {
-    const sample = getSampleSlide14();
-    res.render('slide14', sample);
-  } catch (error) {
-    console.error('Error en /test-slide14:', error);
-    res.status(500).send('Error en /test-slide14: ' + error);
-  }
-});
-
-app.get('/test-slide14-png', async (req, res) => {
-  try {
-    const sample = getSampleSlide14();
-    const html = await renderEjsToString('slide14', sample);
-    const imageBuffer = await htmlToPng(html);
-
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Length', imageBuffer.length);
-    res.end(imageBuffer);
-  } catch (error) {
-    console.error('Error generando PNG slide 14:', error);
-    res.status(500).send('Error generando PNG slide 14: ' + error);
-  }
-});
-
-app.post('/render/slide14', async (req, res) => {
-  try {
-    const data = normalizeSlide14Data(req.body || {});
-    const html = await renderEjsToString('slide14', data);
-    const imageBuffer = await htmlToPng(html);
-
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Length', imageBuffer.length);
-    res.end(imageBuffer);
-  } catch (error) {
-    console.error('Error renderizando slide14:', error);
-    res.status(500).json({
-      ok: false,
-      error: String(error)
-    });
-  }
-});
-
-/****************************************************
- * SLIDE 15
- ****************************************************/
-
-app.get('/test-slide15', async (req, res) => {
-  try {
-    const sample = getSampleSlide15();
-    res.render('slide15', sample);
-  } catch (error) {
-    console.error('Error en /test-slide15:', error);
-    res.status(500).send('Error en /test-slide15: ' + error);
-  }
-});
-
-app.get('/test-slide15-png', async (req, res) => {
-  try {
-    const sample = getSampleSlide15();
-    const html = await renderEjsToString('slide15', sample);
-    const imageBuffer = await htmlToPng(html);
-
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Length', imageBuffer.length);
-    res.end(imageBuffer);
-  } catch (error) {
-    console.error('Error generando PNG slide 15:', error);
-    res.status(500).send('Error generando PNG slide 15: ' + error);
-  }
-});
-
-app.post('/render/slide15', async (req, res) => {
-  try {
-    const data = normalizeSlide15Data(req.body || {});
-    const html = await renderEjsToString('slide15', data);
-    const imageBuffer = await htmlToPng(html);
-
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Length', imageBuffer.length);
-    res.end(imageBuffer);
-  } catch (error) {
-    console.error('Error renderizando slide15:', error);
-    res.status(500).json({
-      ok: false,
-      error: String(error)
-    });
-  }
-});
-
-/****************************************************
- * SLIDE 17
- ****************************************************/
-
-app.get('/test-slide17', async (req, res) => {
-  try {
-    const sample = getSampleSlide17();
-    res.render('slide17', sample);
-  } catch (error) {
-    console.error('Error en /test-slide17:', error);
-    res.status(500).send('Error en /test-slide17: ' + error);
-  }
-});
-
-app.get('/test-slide17-png', async (req, res) => {
-  try {
-    const sample = getSampleSlide17();
-    const html = await renderEjsToString('slide17', sample);
-    const imageBuffer = await htmlToPng(html);
-
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Length', imageBuffer.length);
-    res.end(imageBuffer);
-  } catch (error) {
-    console.error('Error generando PNG slide 17:', error);
-    res.status(500).send('Error generando PNG slide 17: ' + error);
-  }
-});
-
-app.post('/render/slide17', async (req, res) => {
-  try {
-    const data = normalizeSlide17Data(req.body || {});
-    const html = await renderEjsToString('slide17', data);
-    const imageBuffer = await htmlToPng(html);
-
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Length', imageBuffer.length);
-    res.end(imageBuffer);
-  } catch (error) {
-    console.error('Error renderizando slide17:', error);
-    res.status(500).json({
-      ok: false,
-      error: String(error)
-    });
-  }
-});
-
-/****************************************************
- * SLIDE 18
- ****************************************************/
-
-app.get('/test-slide18', async (req, res) => {
-  try {
-    const sample = getSampleSlide18();
-    res.render('slide18', sample);
-  } catch (error) {
-    console.error('Error en /test-slide18:', error);
-    res.status(500).send('Error en /test-slide18: ' + error);
-  }
-});
-
-app.get('/test-slide18-png', async (req, res) => {
-  try {
-    const sample = getSampleSlide18();
-    const html = await renderEjsToString('slide18', sample);
-    const imageBuffer = await htmlToPng(html);
-
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Length', imageBuffer.length);
-    res.end(imageBuffer);
-  } catch (error) {
-    console.error('Error generando PNG slide 18:', error);
-    res.status(500).send('Error generando PNG slide 18: ' + error);
-  }
-});
-
-app.post('/render/slide18', async (req, res) => {
-  try {
-    const data = normalizeSlide18Data(req.body || {});
-    const html = await renderEjsToString('slide18', data);
-    const imageBuffer = await htmlToPng(html);
-
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Length', imageBuffer.length);
-    res.end(imageBuffer);
-  } catch (error) {
-    console.error('Error renderizando slide18:', error);
-    res.status(500).json({
-      ok: false,
-      error: String(error)
-    });
-  }
-});
-
-/****************************************************
- * SLIDE 19
- ****************************************************/
-
-app.get('/test-slide19', async (req, res) => {
-  try {
-    const sample = getSampleSlide19();
-    res.render('slide19', sample);
-  } catch (error) {
-    console.error('Error en /test-slide19:', error);
-    res.status(500).send('Error en /test-slide19: ' + error);
-  }
-});
-
-app.get('/test-slide19-png', async (req, res) => {
-  try {
-    const sample = getSampleSlide19();
-    const html = await renderEjsToString('slide19', sample);
-    const imageBuffer = await htmlToPng(html);
-
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Length', imageBuffer.length);
-    res.end(imageBuffer);
-  } catch (error) {
-    console.error('Error generando PNG slide 19:', error);
-    res.status(500).send('Error generando PNG slide 19: ' + error);
-  }
-});
-
-app.post('/render/slide19', async (req, res) => {
-  try {
-    const data = normalizeSlide19Data(req.body || {});
-    const html = await renderEjsToString('slide19', data);
-    const imageBuffer = await htmlToPng(html);
-
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Length', imageBuffer.length);
-    res.end(imageBuffer);
-  } catch (error) {
-    console.error('Error renderizando slide19:', error);
-    res.status(500).json({
-      ok: false,
-      error: String(error)
-    });
-  }
-});
+      res.setHeader('Content-Type', 'image/png');
+      res.setHeader('Content-Length', imageBuffer.length);
+      res.end(imageBuffer);
+    } catch (error) {
+      console.error(`Error renderizando slide${slideNumber}:`, error);
+      res.status(500).json({
+        ok: false,
+        error: String(error)
+      });
+    }
+  });
+}
 
 /****************************************************
  * DATOS DE PRUEBA - SLIDE 10
@@ -465,20 +147,24 @@ function getSampleSlide10() {
 
 function getSampleSlide11() {
   return normalizeSlide11Data({
-    titulo: 'Yauricocha - Abril 2026 - Mina vs Superficie',
+    titulo: 'Yauricocha - Abril 2026 - Atenciones por Tipo y Evolución Mensual',
     periodo: 'Abril 2026',
     logoText: 'COMM',
 
-    totalAtenciones: 137,
-    totalHoras: 391,
-
-    items: [
-      { zona: 'Mina', atenciones: 72, horas: 215 },
-      { zona: 'Superficie', atenciones: 65, horas: 176 }
+    meses: [
+      { mes: 'Ene-26', mina: 137, superficie: 23, total: 160 },
+      { mes: 'Feb-26', mina: 133, superficie: 10, total: 143 },
+      { mes: 'Mar-26', mina: 128, superficie: 21, total: 149 },
+      { mes: 'Abr-26', mina: 121, superficie: 16, total: 137 }
     ],
 
+    totalAtenciones: 589,
+    totalMinaGlobal: 519,
+    totalSuperficieGlobal: 70,
+    totalMesActualValue: 137,
+
     insight:
-      'La mayor concentración de atenciones se presenta en Mina.'
+      'Predominio de atenciones en la operación minera (88.1%), evidenciando enfoque en servicios preventivos y controlados.'
   });
 }
 
@@ -732,108 +418,126 @@ function normalizeSlide10Data(body) {
  ****************************************************/
 
 function normalizeSlide11Data(body) {
-  const rawItems = Array.isArray(body.items)
-    ? body.items
-    : Array.isArray(body.zonas)
-      ? body.zonas
+  const rawMeses = Array.isArray(body.meses)
+    ? body.meses
+    : Array.isArray(body.mensualItems)
+      ? body.mensualItems
       : [];
 
-  let items = rawItems
-    .filter(item => item && (item.zona || item.nombre || item.ubicacion || item[0]))
+  let meses = rawMeses
+    .filter(item => item && (item.mes || item.periodo || item[0]))
     .map(item => {
       if (Array.isArray(item)) {
+        const mina = toNumber(item[1]);
+        const superficie = toNumber(item[2]);
+        const total = toNumber(item[3]) || mina + superficie;
+
         return {
-          zona: String(item[0] || '').trim(),
-          atenciones: toNumber(item[1]),
-          horas: toNumber(item[2])
+          mes: String(item[0] || '').trim(),
+          mina,
+          superficie,
+          total
         };
       }
 
+      const mina = toNumber(
+        item.mina ??
+        item.im ??
+        item.atencionesMina ??
+        item.interiorMina ??
+        0
+      );
+
+      const superficie = toNumber(
+        item.superficie ??
+        item.sup ??
+        item.atencionesSuperficie ??
+        0
+      );
+
+      const total = toNumber(
+        item.total ??
+        item.atenciones ??
+        item.cantidad ??
+        0
+      ) || mina + superficie;
+
       return {
-        zona: String(item.zona || item.nombre || item.ubicacion || '').trim(),
-        atenciones: toNumber(item.atenciones ?? item.cantidad ?? item.total ?? 0),
-        horas: toNumber(item.horas ?? item.tiempoHoras ?? item.tiempo ?? 0)
+        mes: String(item.mes || item.periodo || '').trim(),
+        mina,
+        superficie,
+        total
       };
     })
-    .filter(item => item.zona);
+    .filter(item => item.mes);
 
-  if (!items.length) {
-    items = [
-      {
-        zona: 'Mina',
-        atenciones: toNumber(body.minaAtenciones ?? 72),
-        horas: toNumber(body.minaHoras ?? 215)
-      },
-      {
-        zona: 'Superficie',
-        atenciones: toNumber(body.superficieAtenciones ?? 65),
-        horas: toNumber(body.superficieHoras ?? 176)
-      }
+  if (!meses.length) {
+    meses = [
+      { mes: 'Ene-26', mina: 137, superficie: 23, total: 160 },
+      { mes: 'Feb-26', mina: 133, superficie: 10, total: 143 },
+      { mes: 'Mar-26', mina: 128, superficie: 21, total: 149 },
+      { mes: 'Abr-26', mina: 121, superficie: 16, total: 137 }
     ];
   }
 
+  const totalMinaGlobal =
+    toNumber(body.totalMinaGlobal ?? body.minaAtenciones ?? body.totalMina ?? 0) ||
+    meses.reduce((acc, item) => acc + item.mina, 0);
+
+  const totalSuperficieGlobal =
+    toNumber(body.totalSuperficieGlobal ?? body.superficieAtenciones ?? body.totalSuperficie ?? 0) ||
+    meses.reduce((acc, item) => acc + item.superficie, 0);
+
   const totalAtenciones =
-    toNumber(body.totalAtenciones) ||
-    items.reduce((acc, item) => acc + item.atenciones, 0);
+    toNumber(body.totalAtenciones ?? body.totalGeneral ?? 0) ||
+    meses.reduce((acc, item) => acc + item.total, 0) ||
+    totalMinaGlobal + totalSuperficieGlobal;
 
-  const totalHoras =
-    toNumber(body.totalHoras) ||
-    items.reduce((acc, item) => acc + item.horas, 0);
-
-  items = items.map(item => ({
-    ...item,
-    pctAtenciones: item.pctAtenciones || calcPct(item.atenciones, totalAtenciones),
-    pctHoras: item.pctHoras || calcPct(item.horas, totalHoras),
-    horasPorAtencion: item.atenciones
-      ? (item.horas / item.atenciones).toFixed(2)
-      : '0.00'
-  }));
-
-  const mina = items.find(item =>
-    String(item.zona).toLowerCase().includes('mina')
-  ) || items[0];
-
-  const superficie = items.find(item =>
-    String(item.zona).toLowerCase().includes('super')
-  ) || items[1] || {
-    zona: 'Superficie',
-    atenciones: 0,
-    horas: 0
+  const mesActual = meses[meses.length - 1] || {
+    mes: '-',
+    mina: 0,
+    superficie: 0,
+    total: 0
   };
 
-  const zonaPrincipal =
-    mina && mina.atenciones >= superficie.atenciones
-      ? mina
-      : superficie;
+  const totalMesActualValue =
+    toNumber(body.totalMesActualValue ?? body.totalMesActual ?? body.totalPeriodo ?? 0) ||
+    mesActual.total;
 
-  const diferencia = Math.abs(
-    toNumber(mina?.atenciones) - toNumber(superficie?.atenciones)
-  );
+  const participacionMina =
+    body.participacionMina ||
+    calcPctOneDecimal(totalMinaGlobal, totalAtenciones);
+
+  const participacionSuperficie =
+    body.participacionSuperficie ||
+    calcPctOneDecimal(totalSuperficieGlobal, totalAtenciones);
 
   return {
     titulo:
       body.titulo ||
-      `Yauricocha - ${body.periodo || 'Periodo'} - Mina vs Superficie`,
+      `Yauricocha - ${body.periodo || 'Periodo'} - Atenciones por Tipo y Evolución Mensual`,
 
     periodo: body.periodo || 'Periodo',
     logoText: body.logoText || 'COMM',
 
+    meses,
+    mensualItems: meses,
+
     totalAtenciones,
-    totalHoras,
+    totalMinaGlobal,
+    totalSuperficieGlobal,
 
-    minaAtenciones: mina?.atenciones || 0,
-    minaHoras: mina?.horas || 0,
-    superficieAtenciones: superficie?.atenciones || 0,
-    superficieHoras: superficie?.horas || 0,
+    minaAtenciones: totalMinaGlobal,
+    superficieAtenciones: totalSuperficieGlobal,
 
-    zonaPrincipal: zonaPrincipal?.zona || '-',
-    diferencia,
+    participacionMina,
+    participacionSuperficie,
 
-    items,
+    totalMesActualValue,
 
     insight:
       body.insight ||
-      `La mayor concentración de atenciones se presenta en ${zonaPrincipal?.zona || '-'}.`
+      `Predominio de atenciones en la operación minera (${participacionMina}), evidenciando enfoque en servicios preventivos y controlados.`
   };
 }
 
@@ -1399,6 +1103,11 @@ function calcPct(value, total) {
   return ((Number(value) / Number(total)) * 100).toFixed(2) + '%';
 }
 
+function calcPctOneDecimal(value, total) {
+  if (!total) return '0.0%';
+  return ((Number(value) / Number(total)) * 100).toFixed(1) + '%';
+}
+
 function renderEjsToString(viewName, data) {
   return new Promise((resolve, reject) => {
     app.render(viewName, data, (err, html) => {
@@ -1446,9 +1155,13 @@ async function htmlToPng(html) {
       waitUntil: 'networkidle0'
     });
 
-    await page.addStyleTag({
-      path: path.join(__dirname, 'public', 'styles.css')
-    });
+    const stylePath = path.join(__dirname, 'public', 'styles.css');
+
+    if (fs.existsSync(stylePath)) {
+      await page.addStyleTag({
+        path: stylePath
+      });
+    }
 
     const screenshot = await page.screenshot({
       type: 'png',
