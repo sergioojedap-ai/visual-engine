@@ -270,33 +270,74 @@ function getSampleSlide12() {
 
 function getSampleSlide14() {
   return normalizeSlide14Data({
-    titulo: 'TOP 10 REQUERIMIENTOS - YAURICOCHA ABRIL 2026',
+    titulo: 'Yauricocha - Abril 2026 - Top 10 Requerimientos',
     periodo: 'Abril 2026',
     logoText: 'COMM',
 
-    totalRequerimientos: 98,
+    totalRequerimientos: 96,
+    totalTiempoHoras: 195,
 
     items: [
-      { nombre: 'Mantenimiento Programado (DAT)', cantidad: 49 },
-      { nombre: 'Instalación Nueva (CCTV)', cantidad: 15 },
-      { nombre: 'Mantenimiento Programado (CCTV)', cantidad: 11 },
-      { nombre: 'Instalación Nueva (DAT)', cantidad: 6 },
-      { nombre: 'Instalación Nueva (RAD)', cantidad: 6 },
-      { nombre: 'Instalación Nueva (GEO)', cantidad: 2 },
-      { nombre: 'Instalación Nueva (TEL)', cantidad: 2 },
-      { nombre: 'Mantenimiento Programado (FO)', cantidad: 2 },
-      { nombre: 'Mantenimiento Programado (RAD)', cantidad: 2 },
-      { nombre: 'Equipo Averiado', cantidad: 1 }
+      {
+        nombre: 'Mantenimiento Programado (DAT)',
+        cantidad: 49,
+        tiempoHoras: 99
+      },
+      {
+        nombre: 'Instalación Nueva (CCTV)',
+        cantidad: 15,
+        tiempoHoras: 34
+      },
+      {
+        nombre: 'Mantenimiento Programado (CCTV)',
+        cantidad: 11,
+        tiempoHoras: 15
+      },
+      {
+        nombre: 'Instalación Nueva (DAT)',
+        cantidad: 6,
+        tiempoHoras: 13
+      },
+      {
+        nombre: 'Instalación Nueva (RAD)',
+        cantidad: 6,
+        tiempoHoras: 15
+      },
+      {
+        nombre: 'Mantenimiento Programado (RAD)',
+        cantidad: 2,
+        tiempoHoras: 5
+      },
+      {
+        nombre: 'Mantenimiento Programado (FO)',
+        cantidad: 2,
+        tiempoHoras: 4
+      },
+      {
+        nombre: 'Instalación Nueva (TEL)',
+        cantidad: 2,
+        tiempoHoras: 3
+      },
+      {
+        nombre: 'Instalación Nueva (GEO)',
+        cantidad: 2,
+        tiempoHoras: 5
+      },
+      {
+        nombre: 'Instalación Nueva (FO)',
+        cantidad: 1,
+        tiempoHoras: 2
+      }
     ],
 
     insights: [
-      'Mantenimiento Programado DAT representa la mitad de los requerimientos del periodo.',
-      'El Top 3 concentra más del 76% del total de requerimientos.',
-      'La concentración permite priorizar recursos sobre las solicitudes más recurrentes.'
+      'Mantenimiento Programado DAT representa la principal causa de requerimientos del periodo.',
+      'El Top 3 concentra más del 78% del total registrado.',
+      'La priorización de las causas principales permite enfocar recursos operativos.'
     ],
 
     insight:
-      'Los principales requerimientos evidencian concentración de demanda operativa en categorías recurrentes.'
+      'La mayor incidencia se concentra en Mantenimiento Programado (DAT).'
   });
 }
 
@@ -505,13 +546,15 @@ function normalizeSlide14Data(body) {
       if (Array.isArray(item)) {
         return {
           nombre: String(item[0] || '').trim(),
-          cantidad: toNumber(item[1])
+          cantidad: toNumber(item[1]),
+          tiempoHoras: toNumber(item[2])
         };
       }
 
       return {
         nombre: String(item.nombre || item.descripcion || item.requerimiento || '').trim(),
-        cantidad: toNumber(item.cantidad || item.total || item.valor)
+        cantidad: toNumber(item.cantidad ?? item.total ?? item.valor ?? 0),
+        tiempoHoras: toNumber(item.tiempoHoras ?? item.tiempo ?? item.horas ?? item.totalHoras ?? 0)
       };
     })
     .filter(item => item.nombre && item.cantidad > 0)
@@ -520,8 +563,12 @@ function normalizeSlide14Data(body) {
 
   const totalTop10 = items.reduce((acc, item) => acc + item.cantidad, 0);
 
+  const totalTiempoHoras =
+    toNumber(body.totalTiempoHoras ?? body.tiempoTotalHoras ?? body.totalHoras ?? 0) ||
+    items.reduce((acc, item) => acc + item.tiempoHoras, 0);
+
   const totalRequerimientos =
-    toNumber(body.totalRequerimientos || body.total || body.requerimientos) ||
+    toNumber(body.totalRequerimientos ?? body.total ?? body.requerimientos ?? 0) ||
     totalTop10;
 
   items = items.map(item => ({
@@ -532,13 +579,19 @@ function normalizeSlide14Data(body) {
   const top1 = items[0] || {
     nombre: '-',
     cantidad: 0,
+    tiempoHoras: 0,
     porcentaje: '0.00%'
   };
+
+  const top2Cantidad = items
+    .slice(0, 2)
+    .reduce((acc, item) => acc + item.cantidad, 0);
 
   const top3Cantidad = items
     .slice(0, 3)
     .reduce((acc, item) => acc + item.cantidad, 0);
 
+  const pctTop2 = body.pctTop2 || calcPct(top2Cantidad, totalRequerimientos);
   const pctTop3 = body.pctTop3 || calcPct(top3Cantidad, totalRequerimientos);
   const pctTop10 = body.pctTop10 || calcPct(totalTop10, totalRequerimientos);
 
@@ -565,16 +618,19 @@ function normalizeSlide14Data(body) {
   return {
     titulo:
       body.titulo ||
-      `TOP 10 REQUERIMIENTOS - YAURICOCHA ${String(body.periodo || 'PERIODO').toUpperCase()}`,
+      `Yauricocha - ${body.periodo || 'Periodo'} - Top 10 Requerimientos`,
 
     periodo: body.periodo || 'Periodo',
     logoText: body.logoText || 'COMM',
 
     totalRequerimientos,
     totalTop10,
+    totalTiempoHoras,
+
     principalRequerimiento,
     cantidadPrincipal,
     pctPrincipal,
+    pctTop2,
     pctTop3,
     pctTop10,
 
@@ -582,7 +638,7 @@ function normalizeSlide14Data(body) {
 
     insight:
       body.insight ||
-      'Los principales requerimientos evidencian concentración de demanda operativa en categorías recurrentes.',
+      `La mayor incidencia se concentra en ${principalRequerimiento}.`,
 
     insights
   };
