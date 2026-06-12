@@ -57,10 +57,6 @@ app.get('/test-slide12-png', async (req, res) => {
   }
 });
 
-/****************************************************
- * SLIDE 12 - RUTA REAL APPS SCRIPT
- ****************************************************/
-
 app.post('/render/slide12', async (req, res) => {
   try {
     const data = normalizeSlide12Data(req.body || {});
@@ -108,10 +104,6 @@ app.get('/test-slide10-png', async (req, res) => {
   }
 });
 
-/****************************************************
- * SLIDE 10 - RUTA REAL APPS SCRIPT
- ****************************************************/
-
 app.post('/render/slide10', async (req, res) => {
   try {
     const data = normalizeSlide10Data(req.body || {});
@@ -137,6 +129,7 @@ app.post('/render/slide10', async (req, res) => {
 function getSampleSlide12() {
   return normalizeSlide12Data({
     titulo: 'Yauricocha - Abril 2026 - Incidentes vs Requerimientos',
+    periodo: 'Abril 2026',
     logoText: 'COMM',
 
     totalAtenciones: 137,
@@ -168,51 +161,59 @@ function getSampleSlide12() {
 
 function getSampleSlide10() {
   return normalizeSlide10Data({
-    titulo: 'Yauricocha - Abril 2026 - Atenciones y Horas por Día',
+    titulo: 'ATENCIONES EN LA OPERACIÓN YAURICOCHA - ABRIL 2026',
+    periodo: 'Abril 2026',
     logoText: 'COMM',
 
+    diasPeriodo: 30,
     totalAtenciones: 137,
-    totalHoras: 482,
+    totalHoras: 391,
     promedioAtencionesDia: '4.6',
-    promedioHorasDia: '16.1',
-    diaMayorAtencion: '11',
+    promedioHorasDia: '13.0',
+    horasPorAtencion: '2.85',
     diasConAtencion: 30,
 
     dias: [
-      { dia: '01', atenciones: 4, horas: 18 },
-      { dia: '02', atenciones: 6, horas: 22 },
-      { dia: '03', atenciones: 5, horas: 20 },
-      { dia: '04', atenciones: 9, horas: 31 },
-      { dia: '05', atenciones: 7, horas: 26 },
-      { dia: '06', atenciones: 3, horas: 14 },
-      { dia: '07', atenciones: 8, horas: 29 },
-      { dia: '08', atenciones: 10, horas: 36 },
-      { dia: '09', atenciones: 6, horas: 24 },
-      { dia: '10', atenciones: 5, horas: 19 },
-      { dia: '11', atenciones: 11, horas: 39 },
-      { dia: '12', atenciones: 7, horas: 27 },
-      { dia: '13', atenciones: 4, horas: 16 },
-      { dia: '14', atenciones: 9, horas: 34 },
-      { dia: '15', atenciones: 3, horas: 12 },
-      { dia: '16', atenciones: 6, horas: 21 },
-      { dia: '17', atenciones: 5, horas: 18 },
-      { dia: '18', atenciones: 8, horas: 30 },
-      { dia: '19', atenciones: 6, horas: 23 },
-      { dia: '20', atenciones: 4, horas: 17 },
-      { dia: '21', atenciones: 7, horas: 25 },
-      { dia: '22', atenciones: 5, horas: 19 },
-      { dia: '23', atenciones: 6, horas: 22 },
-      { dia: '24', atenciones: 4, horas: 15 },
-      { dia: '25', atenciones: 7, horas: 26 },
-      { dia: '26', atenciones: 5, horas: 20 },
-      { dia: '27', atenciones: 3, horas: 13 },
-      { dia: '28', atenciones: 6, horas: 21 },
-      { dia: '29', atenciones: 4, horas: 17 },
-      { dia: '30', atenciones: 5, horas: 18 }
+      { fecha: '01/04/2026', dia: '01', atenciones: 4, horas: 12 },
+      { fecha: '02/04/2026', dia: '02', atenciones: 6, horas: 18 },
+      { fecha: '03/04/2026', dia: '03', atenciones: 5, horas: 16 },
+      { fecha: '04/04/2026', dia: '04', atenciones: 7, horas: 19 },
+      { fecha: '05/04/2026', dia: '05', atenciones: 4, horas: 13 },
+      { fecha: '06/04/2026', dia: '06', atenciones: 5, horas: 14 },
+      { fecha: '07/04/2026', dia: '07', atenciones: 6, horas: 21 },
+      { fecha: '08/04/2026', dia: '08', atenciones: 3, horas: 11 },
+      { fecha: '09/04/2026', dia: '09', atenciones: 5, horas: 13 },
+      { fecha: '10/04/2026', dia: '10', atenciones: 4, horas: 12 },
+      { fecha: '11/04/2026', dia: '11', atenciones: 7, horas: 20 },
+      { fecha: '12/04/2026', dia: '12', atenciones: 4, horas: 12 },
+      { fecha: '13/04/2026', dia: '13', atenciones: 6, horas: 15 },
+      { fecha: '14/04/2026', dia: '14', atenciones: 3, horas: 10 },
+      { fecha: '15/04/2026', dia: '15', atenciones: 4, horas: 12 },
+      { fecha: '16/04/2026', dia: '16', atenciones: 5, horas: 14 },
+      { fecha: '17/04/2026', dia: '17', atenciones: 4, horas: 13 },
+      { fecha: '18/04/2026', dia: '18', atenciones: 6, horas: 17 },
+      { fecha: '19/04/2026', dia: '19', atenciones: 3, horas: 11 },
+      { fecha: '20/04/2026', dia: '20', atenciones: 4, horas: 12 },
+      { fecha: '21/04/2026', dia: '21', atenciones: 5, horas: 15 },
+      { fecha: '22/04/2026', dia: '22', atenciones: 3, horas: 10 },
+      { fecha: '23/04/2026', dia: '23', atenciones: 4, horas: 12 },
+      { fecha: '24/04/2026', dia: '24', atenciones: 5, horas: 13 },
+      { fecha: '25/04/2026', dia: '25', atenciones: 3, horas: 9 },
+      { fecha: '26/04/2026', dia: '26', atenciones: 4, horas: 12 },
+      { fecha: '27/04/2026', dia: '27', atenciones: 5, horas: 15 },
+      { fecha: '28/04/2026', dia: '28', atenciones: 3, horas: 10 },
+      { fecha: '29/04/2026', dia: '29', atenciones: 4, horas: 12 },
+      { fecha: '30/04/2026', dia: '30', atenciones: 5, horas: 13 }
+    ],
+
+    insights: [
+      'Volumen total significativo de actividad operativa.',
+      'Estabilidad operativa con picos controlados de demanda.',
+      'Monitoreo continuo para mantener la calidad del servicio.'
     ],
 
     insight:
-      'La distribución diaria evidencia concentración operativa en jornadas específicas, permitiendo priorizar recursos y reforzar la planificación de atenciones.'
+      'La distribución diaria evidencia estabilidad operativa y picos controlados de demanda durante el periodo evaluado.'
   });
 }
 
@@ -272,6 +273,7 @@ function normalizeSlide12Data(body) {
       body.titulo ||
       `Yauricocha - ${body.periodo || 'Periodo'} - Incidentes vs Requerimientos`,
 
+    periodo: body.periodo || 'Periodo',
     logoText: body.logoText || 'COMM',
 
     totalAtenciones: total,
@@ -337,9 +339,10 @@ function normalizeSlide10Data(body) {
   const dias = Array.isArray(body.dias) ? body.dias : [];
 
   const cleanedDias = dias
-    .filter(d => d && d.dia !== undefined)
+    .filter(d => d && (d.fecha !== undefined || d.dia !== undefined))
     .map(d => ({
-      dia: String(d.dia).padStart(2, '0'),
+      fecha: String(d.fecha || d.dia || '').trim(),
+      dia: String(d.dia || d.fecha || '').trim(),
       atenciones: Number(d.atenciones) || 0,
       horas: Number(d.horas) || 0
     }));
@@ -353,8 +356,8 @@ function normalizeSlide10Data(body) {
     cleanedDias.reduce((acc, d) => acc + d.horas, 0);
 
   const diasConAtencion =
-    Number(body.diasConAtencion) ||
-    cleanedDias.filter(d => d.atenciones > 0).length;
+    Number(body.diasConAtencion || body.diasPeriodo) ||
+    cleanedDias.filter(d => d.atenciones > 0 || d.horas > 0).length;
 
   const promedioAtencionesDia =
     body.promedioAtencionesDia ||
@@ -364,29 +367,41 @@ function normalizeSlide10Data(body) {
     body.promedioHorasDia ||
     (diasConAtencion ? (totalHoras / diasConAtencion).toFixed(1) : '0.0');
 
-  const topDia = cleanedDias.length
-    ? cleanedDias.reduce((max, d) => d.atenciones > max.atenciones ? d : max, cleanedDias[0])
-    : { dia: '-', atenciones: 0 };
+  const horasPorAtencion =
+    body.horasPorAtencion ||
+    (totalAtenciones ? (totalHoras / totalAtenciones).toFixed(2) : '0.00');
+
+  const insights = Array.isArray(body.insights)
+    ? body.insights
+    : [
+        body.insight || 'Volumen total significativo de actividad operativa.',
+        'Estabilidad operativa con picos controlados de demanda.',
+        'Monitoreo continuo para mantener la calidad del servicio.'
+      ];
 
   return {
     titulo:
       body.titulo ||
-      `Yauricocha - ${body.periodo || 'Periodo'} - Atenciones y Horas por Día`,
+      `ATENCIONES EN LA OPERACIÓN YAURICOCHA - ${body.periodo || 'PERIODO'}`,
 
+    periodo: body.periodo || 'Periodo',
     logoText: body.logoText || 'COMM',
 
+    diasPeriodo: Number(body.diasPeriodo) || diasConAtencion,
     totalAtenciones,
     totalHoras,
     promedioAtencionesDia,
     promedioHorasDia,
-    diaMayorAtencion: body.diaMayorAtencion || topDia.dia,
+    horasPorAtencion,
     diasConAtencion,
 
     dias: cleanedDias,
 
     insight:
       body.insight ||
-      'La distribución diaria evidencia concentración operativa en jornadas específicas, permitiendo priorizar recursos y reforzar la planificación de atenciones.'
+      'La distribución diaria evidencia estabilidad operativa y picos controlados de demanda durante el periodo evaluado.',
+
+    insights
   };
 }
 
