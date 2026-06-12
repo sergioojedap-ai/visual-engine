@@ -70,7 +70,7 @@
     }
 
     .title {
-      font-size: 42px;
+      font-size: 36px;
       font-weight: 900;
       color: #071f5c;
       letter-spacing: -0.7px;
@@ -456,7 +456,7 @@
   const maxTipo = Math.ceil(Math.max(...dataMeses.map(i => Math.max(i.mina, i.superficie)), 1) / 10) * 10;
 
   const chartTop = 35;
-  const chartH = 275;
+  const chartH = 250;
   const baseY = chartTop + chartH;
 
   const leftX = 82;
@@ -624,14 +624,14 @@
             <text x="<%= minaX + groupedBarW / 2 %>" y="<%= minaY - 10 %>" text-anchor="middle" class="bar-value"><%= item.mina %></text>
             <text x="<%= supX + groupedBarW / 2 %>" y="<%= supY - 10 %>" text-anchor="middle" class="bar-value orange"><%= item.superficie %></text>
 
-            <text x="<%= xCenter %>" y="320" text-anchor="middle" class="x-label"><%= item.mes %></text>
+            <text x="<%= xCenter %>" y="326" text-anchor="middle" class="x-label"><%= item.mes %></text>
           <% }) %>
 
-          <rect x="312" y="342" width="12" height="12" fill="#0b43bf"></rect>
-          <text x="334" y="354" class="legend-text">IM</text>
+         <rect x="312" y="344" width="12" height="12" fill="#0b43bf"></rect>
+<text x="334" y="356" class="legend-text">IM</text>
 
-          <rect x="405" y="342" width="12" height="12" fill="#ff5f00"></rect>
-          <text x="427" y="354" class="legend-text">SUP</text>
+<rect x="405" y="344" width="12" height="12" fill="#ff5f00"></rect>
+<text x="427" y="356" class="legend-text">SUP</text>
 
           <line x1="<%= rightX %>" y1="<%= baseY %>" x2="<%= rightX + rightW %>" y2="<%= baseY %>" stroke="#c5cfdf" stroke-width="2"></line>
         </svg>
