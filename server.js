@@ -14,7 +14,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 /****************************************************
- * RUTAS DE PRUEBA
+ * RUTAS GENERALES
  ****************************************************/
 
 app.get('/', (req, res) => {
@@ -27,6 +27,10 @@ app.get('/health', (req, res) => {
     message: 'Visual engine activo'
   });
 });
+
+/****************************************************
+ * SLIDE 12 - PRUEBAS
+ ****************************************************/
 
 app.get('/test-slide12', async (req, res) => {
   try {
@@ -47,15 +51,14 @@ app.get('/test-slide12-png', async (req, res) => {
     res.setHeader('Content-Type', 'image/png');
     res.setHeader('Content-Length', imageBuffer.length);
     res.end(imageBuffer);
-
   } catch (error) {
-    console.error('Error generando PNG:', error);
-    res.status(500).send('Error generando PNG: ' + error);
+    console.error('Error generando PNG slide 12:', error);
+    res.status(500).send('Error generando PNG slide 12: ' + error);
   }
 });
 
 /****************************************************
- * RUTA REAL PARA APPS SCRIPT
+ * SLIDE 12 - RUTA REAL APPS SCRIPT
  ****************************************************/
 
 app.post('/render/slide12', async (req, res) => {
@@ -67,7 +70,6 @@ app.post('/render/slide12', async (req, res) => {
     res.setHeader('Content-Type', 'image/png');
     res.setHeader('Content-Length', imageBuffer.length);
     res.end(imageBuffer);
-
   } catch (error) {
     console.error('Error renderizando slide12:', error);
     res.status(500).json({
@@ -78,7 +80,58 @@ app.post('/render/slide12', async (req, res) => {
 });
 
 /****************************************************
- * DATOS DE PRUEBA
+ * SLIDE 10 - PRUEBAS
+ ****************************************************/
+
+app.get('/test-slide10', async (req, res) => {
+  try {
+    const sample = getSampleSlide10();
+    res.render('slide10', sample);
+  } catch (error) {
+    console.error('Error en /test-slide10:', error);
+    res.status(500).send('Error en /test-slide10: ' + error);
+  }
+});
+
+app.get('/test-slide10-png', async (req, res) => {
+  try {
+    const sample = getSampleSlide10();
+    const html = await renderEjsToString('slide10', sample);
+    const imageBuffer = await htmlToPng(html);
+
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Content-Length', imageBuffer.length);
+    res.end(imageBuffer);
+  } catch (error) {
+    console.error('Error generando PNG slide 10:', error);
+    res.status(500).send('Error generando PNG slide 10: ' + error);
+  }
+});
+
+/****************************************************
+ * SLIDE 10 - RUTA REAL APPS SCRIPT
+ ****************************************************/
+
+app.post('/render/slide10', async (req, res) => {
+  try {
+    const data = normalizeSlide10Data(req.body || {});
+    const html = await renderEjsToString('slide10', data);
+    const imageBuffer = await htmlToPng(html);
+
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Content-Length', imageBuffer.length);
+    res.end(imageBuffer);
+  } catch (error) {
+    console.error('Error renderizando slide10:', error);
+    res.status(500).json({
+      ok: false,
+      error: String(error)
+    });
+  }
+});
+
+/****************************************************
+ * DATOS DE PRUEBA - SLIDE 12
  ****************************************************/
 
 function getSampleSlide12() {
@@ -110,7 +163,61 @@ function getSampleSlide12() {
 }
 
 /****************************************************
- * NORMALIZAR DATOS
+ * DATOS DE PRUEBA - SLIDE 10
+ ****************************************************/
+
+function getSampleSlide10() {
+  return normalizeSlide10Data({
+    titulo: 'Yauricocha - Abril 2026 - Atenciones y Horas por Día',
+    logoText: 'COMM',
+
+    totalAtenciones: 137,
+    totalHoras: 482,
+    promedioAtencionesDia: '4.6',
+    promedioHorasDia: '16.1',
+    diaMayorAtencion: '11',
+    diasConAtencion: 30,
+
+    dias: [
+      { dia: '01', atenciones: 4, horas: 18 },
+      { dia: '02', atenciones: 6, horas: 22 },
+      { dia: '03', atenciones: 5, horas: 20 },
+      { dia: '04', atenciones: 9, horas: 31 },
+      { dia: '05', atenciones: 7, horas: 26 },
+      { dia: '06', atenciones: 3, horas: 14 },
+      { dia: '07', atenciones: 8, horas: 29 },
+      { dia: '08', atenciones: 10, horas: 36 },
+      { dia: '09', atenciones: 6, horas: 24 },
+      { dia: '10', atenciones: 5, horas: 19 },
+      { dia: '11', atenciones: 11, horas: 39 },
+      { dia: '12', atenciones: 7, horas: 27 },
+      { dia: '13', atenciones: 4, horas: 16 },
+      { dia: '14', atenciones: 9, horas: 34 },
+      { dia: '15', atenciones: 3, horas: 12 },
+      { dia: '16', atenciones: 6, horas: 21 },
+      { dia: '17', atenciones: 5, horas: 18 },
+      { dia: '18', atenciones: 8, horas: 30 },
+      { dia: '19', atenciones: 6, horas: 23 },
+      { dia: '20', atenciones: 4, horas: 17 },
+      { dia: '21', atenciones: 7, horas: 25 },
+      { dia: '22', atenciones: 5, horas: 19 },
+      { dia: '23', atenciones: 6, horas: 22 },
+      { dia: '24', atenciones: 4, horas: 15 },
+      { dia: '25', atenciones: 7, horas: 26 },
+      { dia: '26', atenciones: 5, horas: 20 },
+      { dia: '27', atenciones: 3, horas: 13 },
+      { dia: '28', atenciones: 6, horas: 21 },
+      { dia: '29', atenciones: 4, horas: 17 },
+      { dia: '30', atenciones: 5, horas: 18 }
+    ],
+
+    insight:
+      'La distribución diaria evidencia concentración operativa en jornadas específicas, permitiendo priorizar recursos y reforzar la planificación de atenciones.'
+  });
+}
+
+/****************************************************
+ * NORMALIZAR DATOS - SLIDE 12
  ****************************************************/
 
 function normalizeSlide12Data(body) {
@@ -152,7 +259,7 @@ function normalizeSlide12Data(body) {
     requerimientos - incidentes
   );
 
-  const tabla = normalizeTabla(body.tabla, {
+  const tabla = normalizeTablaSlide12(body.tabla, {
     incidentes,
     requerimientos,
     total,
@@ -186,7 +293,7 @@ function normalizeSlide12Data(body) {
   };
 }
 
-function normalizeTabla(tabla, base) {
+function normalizeTablaSlide12(tabla, base) {
   if (tabla && !Array.isArray(tabla)) {
     return {
       up: tabla.up || 'TOTAL',
@@ -222,14 +329,75 @@ function normalizeTabla(tabla, base) {
   };
 }
 
+/****************************************************
+ * NORMALIZAR DATOS - SLIDE 10
+ ****************************************************/
+
+function normalizeSlide10Data(body) {
+  const dias = Array.isArray(body.dias) ? body.dias : [];
+
+  const cleanedDias = dias
+    .filter(d => d && d.dia !== undefined)
+    .map(d => ({
+      dia: String(d.dia).padStart(2, '0'),
+      atenciones: Number(d.atenciones) || 0,
+      horas: Number(d.horas) || 0
+    }));
+
+  const totalAtenciones =
+    Number(body.totalAtenciones) ||
+    cleanedDias.reduce((acc, d) => acc + d.atenciones, 0);
+
+  const totalHoras =
+    Number(body.totalHoras) ||
+    cleanedDias.reduce((acc, d) => acc + d.horas, 0);
+
+  const diasConAtencion =
+    Number(body.diasConAtencion) ||
+    cleanedDias.filter(d => d.atenciones > 0).length;
+
+  const promedioAtencionesDia =
+    body.promedioAtencionesDia ||
+    (diasConAtencion ? (totalAtenciones / diasConAtencion).toFixed(1) : '0.0');
+
+  const promedioHorasDia =
+    body.promedioHorasDia ||
+    (diasConAtencion ? (totalHoras / diasConAtencion).toFixed(1) : '0.0');
+
+  const topDia = cleanedDias.length
+    ? cleanedDias.reduce((max, d) => d.atenciones > max.atenciones ? d : max, cleanedDias[0])
+    : { dia: '-', atenciones: 0 };
+
+  return {
+    titulo:
+      body.titulo ||
+      `Yauricocha - ${body.periodo || 'Periodo'} - Atenciones y Horas por Día`,
+
+    logoText: body.logoText || 'COMM',
+
+    totalAtenciones,
+    totalHoras,
+    promedioAtencionesDia,
+    promedioHorasDia,
+    diaMayorAtencion: body.diaMayorAtencion || topDia.dia,
+    diasConAtencion,
+
+    dias: cleanedDias,
+
+    insight:
+      body.insight ||
+      'La distribución diaria evidencia concentración operativa en jornadas específicas, permitiendo priorizar recursos y reforzar la planificación de atenciones.'
+  };
+}
+
+/****************************************************
+ * HELPERS GENERALES
+ ****************************************************/
+
 function calcPct(value, total) {
   if (!total) return '0.00%';
   return ((value / total) * 100).toFixed(2) + '%';
 }
-
-/****************************************************
- * RENDER EJS
- ****************************************************/
 
 function renderEjsToString(viewName, data) {
   return new Promise((resolve, reject) => {
@@ -259,8 +427,6 @@ async function htmlToPng(html) {
       ]
     };
 
-    // Si está en tu laptop, usa Chrome o Edge instalado.
-    // Si está en Render, no encontrará estas rutas y usará el Chrome de Puppeteer.
     const localChromePath = getLocalChromePath();
 
     if (localChromePath) {
