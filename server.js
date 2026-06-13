@@ -18,7 +18,7 @@ app.set('views', path.join(__dirname, 'views'));
  ****************************************************/
 
 app.get('/', (req, res) => {
-  res.redirect('/test-slide11-png');
+  res.redirect('/test-slide13-png');
 });
 
 app.get('/health', (req, res) => {
@@ -35,6 +35,7 @@ app.get('/health', (req, res) => {
 registerSlide(10, getSampleSlide10, normalizeSlide10Data);
 registerSlide(11, getSampleSlide11, normalizeSlide11Data);
 registerSlide(12, getSampleSlide12, normalizeSlide12Data);
+registerSlide(13, getSampleSlide13, normalizeSlide13Data);
 registerSlide(14, getSampleSlide14, normalizeSlide14Data);
 registerSlide(15, getSampleSlide15, normalizeSlide15Data);
 registerSlide(17, getSampleSlide17, normalizeSlide17Data);
@@ -198,6 +199,41 @@ function getSampleSlide12() {
 
     insight:
       'La mayoría de las atenciones corresponden a requerimientos, evidenciando prioridad de gestión en actividades planificadas frente a incidencias.'
+  });
+}
+
+/****************************************************
+ * DATOS DE PRUEBA - SLIDE 13
+ ****************************************************/
+
+function getSampleSlide13() {
+  return normalizeSlide13Data({
+    titulo: 'Yauricocha - Abril 2026 - Detalle de Requerimientos e Incidentes',
+    periodo: 'Abril 2026',
+    logoText: 'COMM',
+
+    totalRequerimientos: 1569,
+    totalIncidentes: 691,
+    totalAtenciones: 2260,
+    participacionRequerimientos: '69%',
+    participacionIncidentes: '31%',
+    promedioMensualTotal: '226.0',
+
+    meses: [
+      { mes: 'Jul-25', incidentes: 81, requerimientos: 176 },
+      { mes: 'Ago-25', incidentes: 77, requerimientos: 180 },
+      { mes: 'Set-25', incidentes: 81, requerimientos: 190 },
+      { mes: 'Oct-25', incidentes: 100, requerimientos: 178 },
+      { mes: 'Nov-25', incidentes: 90, requerimientos: 224 },
+      { mes: 'Dic-25', incidentes: 73, requerimientos: 216 },
+      { mes: 'Ene-26', incidentes: 47, requerimientos: 82 },
+      { mes: 'Feb-26', incidentes: 50, requerimientos: 90 },
+      { mes: 'Mar-26', incidentes: 53, requerimientos: 113 },
+      { mes: 'Abr-26', incidentes: 39, requerimientos: 120 }
+    ],
+
+    insight:
+      'La gestión operativa se mantiene eficiente, con una alta participación de requerimientos (69%) frente a incidentes (31%), lo que evidencia un entorno controlado y predecible.'
   });
 }
 
@@ -656,6 +692,110 @@ function normalizeTablaSlide12(tabla, base) {
 }
 
 /****************************************************
+ * NORMALIZAR DATOS - SLIDE 13
+ ****************************************************/
+
+function normalizeSlide13Data(body) {
+  const rawMeses = Array.isArray(body.meses)
+    ? body.meses
+    : Array.isArray(body.mensualItems)
+      ? body.mensualItems
+      : [];
+
+  let meses = rawMeses
+    .filter(item => item && (item.mes || item.periodo || item[0]))
+    .map(item => {
+      if (Array.isArray(item)) {
+        return {
+          mes: String(item[0] || '').trim(),
+          incidentes: toNumber(item[1]),
+          requerimientos: toNumber(item[2])
+        };
+      }
+
+      return {
+        mes: String(item.mes || item.periodo || '').trim(),
+        incidentes: toNumber(
+          item.incidentes ??
+          item.incidente ??
+          item.inc ??
+          0
+        ),
+        requerimientos: toNumber(
+          item.requerimientos ??
+          item.requerimiento ??
+          item.req ??
+          0
+        )
+      };
+    })
+    .filter(item => item.mes);
+
+  if (!meses.length) {
+    meses = [
+      { mes: 'Jul-25', incidentes: 81, requerimientos: 176 },
+      { mes: 'Ago-25', incidentes: 77, requerimientos: 180 },
+      { mes: 'Set-25', incidentes: 81, requerimientos: 190 },
+      { mes: 'Oct-25', incidentes: 100, requerimientos: 178 },
+      { mes: 'Nov-25', incidentes: 90, requerimientos: 224 },
+      { mes: 'Dic-25', incidentes: 73, requerimientos: 216 },
+      { mes: 'Ene-26', incidentes: 47, requerimientos: 82 },
+      { mes: 'Feb-26', incidentes: 50, requerimientos: 90 },
+      { mes: 'Mar-26', incidentes: 53, requerimientos: 113 },
+      { mes: 'Abr-26', incidentes: 39, requerimientos: 120 }
+    ];
+  }
+
+  const totalRequerimientos =
+    toNumber(body.totalRequerimientos ?? body.requerimientos ?? 0) ||
+    meses.reduce((acc, item) => acc + item.requerimientos, 0);
+
+  const totalIncidentes =
+    toNumber(body.totalIncidentes ?? body.incidentes ?? 0) ||
+    meses.reduce((acc, item) => acc + item.incidentes, 0);
+
+  const totalAtenciones =
+    toNumber(body.totalAtenciones ?? body.total ?? 0) ||
+    totalRequerimientos + totalIncidentes;
+
+  const participacionRequerimientos =
+    body.participacionRequerimientos ||
+    calcPctNoDecimal(totalRequerimientos, totalAtenciones);
+
+  const participacionIncidentes =
+    body.participacionIncidentes ||
+    calcPctNoDecimal(totalIncidentes, totalAtenciones);
+
+  const promedioMensualTotal =
+    body.promedioMensualTotal ||
+    (meses.length ? (totalAtenciones / meses.length).toFixed(1) : '0.0');
+
+  return {
+    titulo:
+      body.titulo ||
+      `Yauricocha - ${body.periodo || 'Periodo'} - Detalle de Requerimientos e Incidentes`,
+
+    periodo: body.periodo || 'Periodo',
+    logoText: body.logoText || 'COMM',
+
+    meses,
+    mensualItems: meses,
+
+    totalRequerimientos,
+    totalIncidentes,
+    totalAtenciones,
+
+    participacionRequerimientos,
+    participacionIncidentes,
+    promedioMensualTotal,
+
+    insight:
+      body.insight ||
+      `La gestión operativa se mantiene eficiente, con una alta participación de requerimientos (${participacionRequerimientos}) frente a incidentes (${participacionIncidentes}), lo que evidencia un entorno controlado y predecible.`
+  };
+}
+
+/****************************************************
  * NORMALIZAR DATOS - SLIDE 14
  ****************************************************/
 
@@ -1106,6 +1246,11 @@ function calcPct(value, total) {
 function calcPctOneDecimal(value, total) {
   if (!total) return '0.0%';
   return ((Number(value) / Number(total)) * 100).toFixed(1) + '%';
+}
+
+function calcPctNoDecimal(value, total) {
+  if (!total) return '0%';
+  return Math.round((Number(value) / Number(total)) * 100) + '%';
 }
 
 function renderEjsToString(viewName, data) {
