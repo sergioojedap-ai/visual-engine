@@ -425,6 +425,19 @@ function normalizeSlide10Data(body) {
     body.horasPorAtencion ||
     (totalAtenciones ? (totalHoras / totalAtenciones).toFixed(2) : '0.00');
 
+  const insightPrincipal =
+    body.insight ||
+    'La distribución diaria evidencia estabilidad operativa y picos controlados de demanda durante el periodo evaluado.';
+
+  const insights =
+    Array.isArray(body.insights) && body.insights.length
+      ? body.insights
+      : [
+          insightPrincipal,
+          'El volumen de atenciones se mantiene dentro de un comportamiento operativo controlado.',
+          'El seguimiento diario permite identificar picos de demanda y mejorar la planificación de recursos.'
+        ];
+
   return {
     titulo:
       body.titulo ||
@@ -443,9 +456,8 @@ function normalizeSlide10Data(body) {
 
     dias: cleanedDias,
 
-    insight:
-      body.insight ||
-      'La distribución diaria evidencia estabilidad operativa y picos controlados de demanda durante el periodo evaluado.'
+    insight: insightPrincipal,
+    insights: insights
   };
 }
 
