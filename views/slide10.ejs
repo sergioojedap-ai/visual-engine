@@ -150,7 +150,7 @@
     .s10-chart-panel {
       position: relative;
       z-index: 2;
-      height: 474px;
+      height: 445px;
       background: #ffffff;
       border: 1px solid #cddbef;
       border-radius: 18px;
@@ -173,17 +173,17 @@
     }
 
     .s10-chart-box {
-      height: 435px;
-      padding: 6px 28px 4px 28px;
+      height: 406px;
+      padding: 4px 28px 2px 28px;
     }
 
     .s10-bottom-grid {
       position: relative;
       z-index: 2;
       display: grid;
-      grid-template-columns: 0.38fr 0.62fr;
+      grid-template-columns: 0.36fr 0.64fr;
       gap: 18px;
-      height: 152px;
+      height: 184px;
     }
 
     .s10-summary-card {
@@ -229,69 +229,71 @@
       border-radius: 18px;
       box-shadow: 0 8px 18px rgba(11,45,92,0.18);
       display: grid;
-      grid-template-columns: 88px 1fr;
-      align-items: center;
-      padding: 18px 28px;
+      grid-template-columns: 76px 1fr;
+      align-items: start;
+      padding: 18px 30px 18px 28px;
       color: white;
       overflow: hidden;
     }
 
     .s10-insight-main-icon {
-      width: 64px;
-      height: 64px;
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
       background: #ffffff;
       color: #0b3298;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 34px;
+      font-size: 31px;
       font-weight: 900;
       box-shadow: 0 8px 18px rgba(0,0,0,0.16);
+      margin-top: 38px;
     }
 
     .s10-insights-title {
-      font-size: 24px;
+      font-size: 23px;
       font-weight: 900;
       text-transform: uppercase;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       letter-spacing: 0.2px;
       color: #ffffff;
     }
 
     .s10-insight-row {
       display: grid;
-      grid-template-columns: 32px 1fr;
+      grid-template-columns: 28px 1fr;
       gap: 12px;
       align-items: start;
-      margin-bottom: 8px;
+      margin-bottom: 7px;
     }
 
     .s10-check-icon {
-      width: 25px;
-      height: 25px;
+      width: 23px;
+      height: 23px;
       border-radius: 50%;
       background: #ffffff;
       color: #0d55d8;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 17px;
+      font-size: 15px;
       font-weight: 900;
-      margin-top: 1px;
+      margin-top: 0;
     }
 
     .s10-insight-text {
-      font-size: 18px;
-      line-height: 1.22;
+      font-size: 16.5px;
+      line-height: 1.18;
       font-weight: 700;
       color: #ffffff;
+      padding-right: 10px;
     }
 
     .s10-insight-divider {
       height: 1px;
-      border-top: 1px dashed rgba(255,255,255,0.45);
-      margin: 4px 0 10px 44px;
+      border-top: 1px dashed rgba(255,255,255,0.42);
+      margin: 6px 0 9px 40px;
     }
 
     .s10-axis-label {
@@ -402,7 +404,7 @@
   const chartLeft = 70;
   const chartTop = 24;
   const chartW = 1400;
-  const chartH = 290;
+  const chartH = 270;
   const baseY = chartTop + chartH;
   const gap = data.length ? chartW / data.length : chartW;
   const barW = Math.min(28, gap * 0.55);
@@ -558,9 +560,9 @@
 
           <text
             x="<%= xCenter %>"
-            y="345"
+            y="330"
             text-anchor="end"
-            transform="rotate(-48 <%= xCenter %>,345)"
+            transform="rotate(-48 <%= xCenter %>,330)"
             class="s10-date-label"
           >
             <%= item.fecha || item.dia %>
@@ -576,11 +578,11 @@
           stroke-width="2"
         ></line>
 
-        <rect x="635" y="383" width="14" height="14" fill="#0b43bf"></rect>
-        <text x="660" y="397" class="s10-legend-text">Atenciones</text>
+        <rect x="635" y="368" width="14" height="14" fill="#0b43bf"></rect>
+        <text x="660" y="382" class="s10-legend-text">Atenciones</text>
 
-        <rect x="830" y="383" width="14" height="14" fill="#9fc6ff"></rect>
-        <text x="855" y="397" class="s10-legend-text">Horas</text>
+        <rect x="830" y="368" width="14" height="14" fill="#9fc6ff"></rect>
+        <text x="855" y="382" class="s10-legend-text">Horas</text>
       </svg>
     </div>
   </div>
