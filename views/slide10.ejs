@@ -16,7 +16,7 @@
       background: #eef4fb;
     }
 
-    .slide {
+    .s10-slide {
       width: 1600px;
       height: 900px;
       background: linear-gradient(180deg, #ffffff 0%, #f4f8ff 100%);
@@ -26,18 +26,7 @@
       padding: 22px 26px 0 26px;
     }
 
-    .top-curve {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 365px;
-      height: 90px;
-      background: linear-gradient(135deg, #0d65df 0%, #082d91 100%);
-      border-bottom-left-radius: 110px;
-      z-index: 0;
-    }
-
-    .bottom-band {
+    .s10-bottom-band {
       position: absolute;
       left: 0;
       bottom: 0;
@@ -47,30 +36,30 @@
       z-index: 0;
     }
 
-    .header {
+    .s10-header {
       position: relative;
       z-index: 2;
       height: 66px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
+      padding-right: 360px;
     }
 
-    .title-wrap {
+    .s10-title-wrap {
       display: flex;
       align-items: center;
       gap: 18px;
     }
 
-    .title-bar {
+    .s10-title-bar {
       width: 13px;
       height: 54px;
       border-radius: 6px;
       background: linear-gradient(180deg, #0d65df, #13b7ba);
     }
 
-    .title {
+    .s10-title {
       font-size: 38px;
       font-weight: 900;
       color: #071f5c;
@@ -79,46 +68,7 @@
       white-space: nowrap;
     }
 
-    .logo {
-      position: relative;
-      z-index: 3;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      color: #ffffff;
-      font-size: 39px;
-      font-weight: 900;
-      padding-right: 24px;
-      letter-spacing: -1px;
-    }
-
-    .logo-symbol {
-      width: 54px;
-      height: 31px;
-      position: relative;
-      transform: rotate(-18deg);
-    }
-
-    .logo-symbol::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      border: 5px dashed rgba(255,255,255,0.85);
-    }
-
-    .logo-symbol::after {
-      content: "";
-      position: absolute;
-      left: 8px;
-      top: 6px;
-      width: 36px;
-      height: 18px;
-      border-radius: 50%;
-      border: 3px dotted rgba(255,255,255,0.55);
-    }
-
-    .kpi-row {
+    .s10-kpi-row {
       position: relative;
       z-index: 2;
       display: grid;
@@ -127,7 +77,7 @@
       margin-bottom: 18px;
     }
 
-    .kpi-card {
+    .s10-kpi-card {
       height: 122px;
       background: #ffffff;
       border: 1px solid #d2dceb;
@@ -140,7 +90,7 @@
       padding: 14px 18px;
     }
 
-    .kpi-icon {
+    .s10-kpi-icon {
       width: 72px;
       height: 72px;
       border-radius: 18px;
@@ -153,23 +103,23 @@
       box-shadow: 0 9px 16px rgba(0,0,0,0.16);
     }
 
-    .bg-blue {
+    .s10-bg-blue {
       background: linear-gradient(135deg, #1264df, #06339b);
     }
 
-    .bg-teal {
+    .s10-bg-teal {
       background: linear-gradient(135deg, #1ac4c6, #087a87);
     }
 
-    .bg-orange {
+    .s10-bg-orange {
       background: linear-gradient(135deg, #ffb51d, #ff5f00);
     }
 
-    .bg-purple {
+    .s10-bg-purple {
       background: linear-gradient(135deg, #9542e8, #5520aa);
     }
 
-    .kpi-label {
+    .s10-kpi-label {
       font-size: 14px;
       font-weight: 900;
       color: #092869;
@@ -178,26 +128,26 @@
       margin-bottom: 7px;
     }
 
-    .kpi-value {
+    .s10-kpi-value {
       font-size: 40px;
       font-weight: 900;
       line-height: 1;
       color: #0d55d8;
     }
 
-    .kpi-value.teal {
+    .s10-teal {
       color: #0a8a96;
     }
 
-    .kpi-value.orange {
+    .s10-orange {
       color: #ff6200;
     }
 
-    .kpi-value.purple {
+    .s10-purple {
       color: #7a35d7;
     }
 
-    .chart-panel {
+    .s10-chart-panel {
       position: relative;
       z-index: 2;
       height: 474px;
@@ -209,7 +159,7 @@
       margin-bottom: 16px;
     }
 
-    .panel-title {
+    .s10-panel-title {
       height: 39px;
       background: linear-gradient(90deg, #0b3298 0%, #0d5dd4 50%, #11b7bb 100%);
       color: white;
@@ -222,12 +172,12 @@
       letter-spacing: 0.2px;
     }
 
-    .chart-box {
+    .s10-chart-box {
       height: 435px;
-      padding: 9px 28px 6px 28px;
+      padding: 6px 28px 4px 28px;
     }
 
-    .bottom-grid {
+    .s10-bottom-grid {
       position: relative;
       z-index: 2;
       display: grid;
@@ -236,7 +186,7 @@
       height: 152px;
     }
 
-    .summary-card {
+    .s10-summary-card {
       background: #ffffff;
       border: 1.7px solid #1b65e3;
       border-radius: 18px;
@@ -247,7 +197,7 @@
       padding: 22px 24px;
     }
 
-    .summary-icon {
+    .s10-summary-icon {
       width: 76px;
       height: 76px;
       border-radius: 18px;
@@ -261,62 +211,63 @@
       box-shadow: 0 8px 16px rgba(11,45,92,0.20);
     }
 
-    .summary-title {
+    .s10-summary-title {
       font-size: 22px;
       font-weight: 900;
       color: #092d91;
       margin-bottom: 12px;
     }
 
-    .summary-text {
+    .s10-summary-text {
       font-size: 16px;
       line-height: 1.35;
       color: #0a1b44;
     }
 
-    .insights-card {
+    .s10-insights-card {
       background: linear-gradient(135deg, #06349d 0%, #0d65df 48%, #12b6b9 100%);
       border-radius: 18px;
       box-shadow: 0 8px 18px rgba(11,45,92,0.18);
       display: grid;
-      grid-template-columns: 96px 1fr;
+      grid-template-columns: 88px 1fr;
       align-items: center;
-      padding: 20px 28px;
+      padding: 18px 28px;
       color: white;
       overflow: hidden;
     }
 
-    .insight-main-icon {
-      width: 68px;
-      height: 68px;
+    .s10-insight-main-icon {
+      width: 64px;
+      height: 64px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.95);
+      background: #ffffff;
       color: #0b3298;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 38px;
+      font-size: 34px;
       font-weight: 900;
       box-shadow: 0 8px 18px rgba(0,0,0,0.16);
     }
 
-    .insights-title {
+    .s10-insights-title {
       font-size: 24px;
       font-weight: 900;
       text-transform: uppercase;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       letter-spacing: 0.2px;
+      color: #ffffff;
     }
 
-    .insight-row {
+    .s10-insight-row {
       display: grid;
-      grid-template-columns: 34px 1fr;
+      grid-template-columns: 32px 1fr;
       gap: 12px;
       align-items: start;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
-    .check-icon {
+    .s10-check-icon {
       width: 25px;
       height: 25px;
       border-radius: 50%;
@@ -330,50 +281,50 @@
       margin-top: 1px;
     }
 
-    .insight-text {
-      font-size: 19px;
-      line-height: 1.25;
+    .s10-insight-text {
+      font-size: 18px;
+      line-height: 1.22;
       font-weight: 700;
       color: #ffffff;
     }
 
-    .insight-divider {
+    .s10-insight-divider {
       height: 1px;
       border-top: 1px dashed rgba(255,255,255,0.45);
-      margin: 6px 0 12px 46px;
+      margin: 4px 0 10px 44px;
     }
 
-    .axis-label {
+    .s10-axis-label {
       fill: #08245c;
       font-size: 14px;
       font-weight: 900;
     }
 
-    .axis-title {
+    .s10-axis-title {
       fill: #08245c;
       font-size: 15px;
       font-weight: 900;
     }
 
-    .bar-label-dark {
+    .s10-bar-label-dark {
       fill: #ffffff;
       font-size: 13px;
       font-weight: 900;
     }
 
-    .bar-label-light {
+    .s10-bar-label-light {
       fill: #0a1b44;
       font-size: 13px;
       font-weight: 900;
     }
 
-    .date-label {
+    .s10-date-label {
       fill: #08245c;
       font-size: 10px;
       font-weight: 800;
     }
 
-    .legend-text {
+    .s10-legend-text {
       fill: #08245c;
       font-size: 17px;
       font-weight: 900;
@@ -383,15 +334,8 @@
 
 <body>
 <%
-  const safeLogo = typeof logoText !== 'undefined' ? logoText : 'COMM';
-
   function num(v) {
     return Number(v) || 0;
-  }
-
-  function cortar(txt, n) {
-    txt = String(txt || '');
-    return txt.length > n ? txt.substring(0, n - 3) + '...' : txt;
   }
 
   const rawDias = typeof dias !== 'undefined' && Array.isArray(dias)
@@ -456,84 +400,78 @@
   const maxStack = Math.ceil(maxStackRaw / 5) * 5;
 
   const chartLeft = 70;
-  const chartTop = 28;
+  const chartTop = 24;
   const chartW = 1400;
-  const chartH = 280;
+  const chartH = 290;
   const baseY = chartTop + chartH;
   const gap = data.length ? chartW / data.length : chartW;
   const barW = Math.min(28, gap * 0.55);
 %>
 
-<div class="slide">
-  <div class="top-curve"></div>
-  <div class="bottom-band"></div>
+<div class="s10-slide">
+  <div class="s10-bottom-band"></div>
 
-  <div class="header">
-    <div class="title-wrap">
-      <div class="title-bar"></div>
-      <div class="title"><%= safeTitulo %></div>
-    </div>
-
-    <div class="logo">
-      <div class="logo-symbol"></div>
-      <div><%= safeLogo %></div>
+  <div class="s10-header">
+    <div class="s10-title-wrap">
+      <div class="s10-title-bar"></div>
+      <div class="s10-title"><%= safeTitulo %></div>
     </div>
   </div>
 
-  <div class="kpi-row">
-    <div class="kpi-card">
-      <div class="kpi-icon bg-blue">▣</div>
+  <div class="s10-kpi-row">
+    <div class="s10-kpi-card">
+      <div class="s10-kpi-icon s10-bg-blue">▣</div>
       <div>
-        <div class="kpi-label">Días</div>
-        <div class="kpi-value"><%= diasActivos %></div>
+        <div class="s10-kpi-label">Días</div>
+        <div class="s10-kpi-value"><%= diasActivos %></div>
       </div>
     </div>
 
-    <div class="kpi-card">
-      <div class="kpi-icon bg-teal">●●●</div>
+    <div class="s10-kpi-card">
+      <div class="s10-kpi-icon s10-bg-teal">●●●</div>
       <div>
-        <div class="kpi-label">Atenciones</div>
-        <div class="kpi-value teal"><%= totalAt %></div>
+        <div class="s10-kpi-label">Atenciones</div>
+        <div class="s10-kpi-value s10-teal"><%= totalAt %></div>
       </div>
     </div>
 
-    <div class="kpi-card">
-      <div class="kpi-icon bg-blue">◷</div>
+    <div class="s10-kpi-card">
+      <div class="s10-kpi-icon s10-bg-blue">◷</div>
       <div>
-        <div class="kpi-label">Horas</div>
-        <div class="kpi-value"><%= totalHr %></div>
+        <div class="s10-kpi-label">Horas</div>
+        <div class="s10-kpi-value"><%= totalHr %></div>
       </div>
     </div>
 
-    <div class="kpi-card">
-      <div class="kpi-icon bg-orange">▥</div>
+    <div class="s10-kpi-card">
+      <div class="s10-kpi-icon s10-bg-orange">▥</div>
       <div>
-        <div class="kpi-label">Promedio de<br>Atenciones por Día</div>
-        <div class="kpi-value orange"><%= promedioAt %></div>
+        <div class="s10-kpi-label">Promedio de<br>Atenciones por Día</div>
+        <div class="s10-kpi-value s10-orange"><%= promedioAt %></div>
       </div>
     </div>
 
-    <div class="kpi-card">
-      <div class="kpi-icon bg-purple">◷</div>
+    <div class="s10-kpi-card">
+      <div class="s10-kpi-icon s10-bg-purple">◷</div>
       <div>
-        <div class="kpi-label">Promedio de<br>Horas por Día</div>
-        <div class="kpi-value purple"><%= promedioHr %></div>
+        <div class="s10-kpi-label">Promedio de<br>Horas por Día</div>
+        <div class="s10-kpi-value s10-purple"><%= promedioHr %></div>
       </div>
     </div>
 
-    <div class="kpi-card">
-      <div class="kpi-icon bg-teal">▦</div>
+    <div class="s10-kpi-card">
+      <div class="s10-kpi-icon s10-bg-teal">▦</div>
       <div>
-        <div class="kpi-label">Horas por<br>Atención</div>
-        <div class="kpi-value teal"><%= horasAt %></div>
+        <div class="s10-kpi-label">Horas por<br>Atención</div>
+        <div class="s10-kpi-value s10-teal"><%= horasAt %></div>
       </div>
     </div>
   </div>
 
-  <div class="chart-panel">
-    <div class="panel-title">ATENCIONES Y HORAS DIARIAS - <%= String(safePeriodo).toUpperCase() %></div>
+  <div class="s10-chart-panel">
+    <div class="s10-panel-title">ATENCIONES Y HORAS DIARIAS - <%= String(safePeriodo).toUpperCase() %></div>
 
-    <div class="chart-box">
+    <div class="s10-chart-box">
       <svg width="100%" height="100%" viewBox="0 0 1500 410" preserveAspectRatio="none">
 
         <% [0, 0.25, 0.50, 0.75, 1].forEach(p => {
@@ -550,16 +488,15 @@
             stroke-dasharray="4 4"
           ></line>
 
-          <text x="42" y="<%= y + 5 %>" class="axis-label"><%= val %></text>
+          <text x="42" y="<%= y + 5 %>" class="s10-axis-label"><%= val %></text>
         <% }) %>
 
-        <text x="20" y="190" transform="rotate(-90 20,190)" class="axis-title">
+        <text x="20" y="190" transform="rotate(-90 20,190)" class="s10-axis-title">
           CANTIDAD
         </text>
 
         <% data.forEach((item, i) => {
           const xCenter = chartLeft + i * gap + gap / 2;
-          const totalStack = item.atenciones + item.horas;
           const atH = maxStack ? (item.atenciones / maxStack) * chartH : 0;
           const hrH = maxStack ? (item.horas / maxStack) * chartH : 0;
 
@@ -568,12 +505,12 @@
           const hrY = baseY - atH - hrH;
         %>
           <defs>
-            <linearGradient id="gradAt<%= i %>" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="s10GradAt<%= i %>" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="#0d65df"/>
               <stop offset="100%" stop-color="#07349f"/>
             </linearGradient>
 
-            <linearGradient id="gradHr<%= i %>" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="s10GradHr<%= i %>" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="#b9d7ff"/>
               <stop offset="100%" stop-color="#8dbaff"/>
             </linearGradient>
@@ -584,7 +521,7 @@
             y="<%= hrY %>"
             width="<%= barW %>"
             height="<%= hrH %>"
-            fill="url(#gradHr<%= i %>)"
+            fill="url(#s10GradHr<%= i %>)"
             rx="2"
           ></rect>
 
@@ -593,7 +530,7 @@
             y="<%= atY %>"
             width="<%= barW %>"
             height="<%= atH %>"
-            fill="url(#gradAt<%= i %>)"
+            fill="url(#s10GradAt<%= i %>)"
             rx="2"
           ></rect>
 
@@ -602,7 +539,7 @@
               x="<%= xCenter %>"
               y="<%= hrY + Math.max(14, hrH / 2) %>"
               text-anchor="middle"
-              class="bar-label-light"
+              class="s10-bar-label-light"
             >
               <%= item.horas %>
             </text>
@@ -613,7 +550,7 @@
               x="<%= xCenter %>"
               y="<%= atY + Math.max(15, atH / 2 + 4) %>"
               text-anchor="middle"
-              class="bar-label-dark"
+              class="s10-bar-label-dark"
             >
               <%= item.atenciones %>
             </text>
@@ -624,7 +561,7 @@
             y="345"
             text-anchor="end"
             transform="rotate(-48 <%= xCenter %>,345)"
-            class="date-label"
+            class="s10-date-label"
           >
             <%= item.fecha || item.dia %>
           </text>
@@ -640,44 +577,44 @@
         ></line>
 
         <rect x="635" y="383" width="14" height="14" fill="#0b43bf"></rect>
-        <text x="660" y="397" class="legend-text">Atenciones</text>
+        <text x="660" y="397" class="s10-legend-text">Atenciones</text>
 
         <rect x="830" y="383" width="14" height="14" fill="#9fc6ff"></rect>
-        <text x="855" y="397" class="legend-text">Horas</text>
+        <text x="855" y="397" class="s10-legend-text">Horas</text>
       </svg>
     </div>
   </div>
 
-  <div class="bottom-grid">
-    <div class="summary-card">
-      <div class="summary-icon">↗</div>
+  <div class="s10-bottom-grid">
+    <div class="s10-summary-card">
+      <div class="s10-summary-icon">↗</div>
 
       <div>
-        <div class="summary-title">Tendencia de Atenciones Diarias</div>
-        <div class="summary-text">
+        <div class="s10-summary-title">Tendencia de Atenciones Diarias</div>
+        <div class="s10-summary-text">
           Distribución diaria de atenciones, mostrando estabilidad operativa y picos controlados de demanda a lo largo del mes.
         </div>
       </div>
     </div>
 
-    <div class="insights-card">
-      <div class="insight-main-icon">●</div>
+    <div class="s10-insights-card">
+      <div class="s10-insight-main-icon">●</div>
 
       <div>
-        <div class="insights-title">INSIGHTS EJECUTIVOS</div>
+        <div class="s10-insights-title">INSIGHTS EJECUTIVOS</div>
 
-        <div class="insight-row">
-          <div class="check-icon">✓</div>
-          <div class="insight-text">
+        <div class="s10-insight-row">
+          <div class="s10-check-icon">✓</div>
+          <div class="s10-insight-text">
             <%= safeInsights[0] || 'La distribución diaria evidencia el comportamiento operativo del periodo seleccionado.' %>
           </div>
         </div>
 
-        <div class="insight-divider"></div>
+        <div class="s10-insight-divider"></div>
 
-        <div class="insight-row">
-          <div class="check-icon">✓</div>
-          <div class="insight-text">
+        <div class="s10-insight-row">
+          <div class="s10-check-icon">✓</div>
+          <div class="s10-insight-text">
             <%= safeInsights[1] || 'El seguimiento diario permite identificar picos de demanda y asignar recursos con mayor precisión.' %>
           </div>
         </div>
