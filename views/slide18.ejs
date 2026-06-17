@@ -183,7 +183,7 @@
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
       gap: 18px;
-      height: 455px;
+      height: 430px;
       margin-bottom: 12px;
     }
 
@@ -228,12 +228,12 @@
     }
 
     .chart-box {
-      height: 412px;
+      height: 387px;
       padding: 12px 20px 6px 20px;
     }
 
     .table-box {
-      height: 412px;
+      height: 387px;
       padding: 14px 16px 10px 16px;
     }
 
@@ -288,15 +288,15 @@
     .bottom-box {
       position: relative;
       z-index: 3;
-      height: 118px;
+      height: 145px;
       background: #ffffff;
       border: 2px solid #0d65df;
       border-radius: 16px;
       box-shadow: 0 7px 16px rgba(11,45,92,0.10);
       display: grid;
-      grid-template-columns: 100px 1fr 170px;
+      grid-template-columns: 100px 1fr 150px;
       align-items: center;
-      padding: 12px 20px;
+      padding: 14px 20px;
       overflow: hidden;
     }
 
@@ -317,6 +317,7 @@
     .bottom-text-wrap {
       border-left: 2px solid #0d65df;
       padding-left: 22px;
+      padding-right: 20px;
     }
 
     .bottom-title {
@@ -324,13 +325,18 @@
       font-weight: 900;
       color: #092d91;
       text-transform: uppercase;
-      margin-bottom: 5px;
+      margin-bottom: 8px;
     }
 
     .bottom-text {
-      font-size: 15px;
+      font-size: 16px;
       color: #111;
-      line-height: 1.25;
+      line-height: 1.35;
+      max-width: 1050px;
+    }
+
+    .bottom-text p {
+      margin-bottom: 4px;
     }
 
     .watermark {
@@ -451,10 +457,13 @@
   const gap = processedItems.length ? chartW / processedItems.length : chartW;
   const barW = Math.min(42, gap * 0.42);
 
-  const bottomMessage =
+  const conclusion1 =
     typeof insight !== 'undefined' && insight
       ? insight
       : `El suministro de mayor uso en requerimientos corresponde a ${top1.nombre}.`;
+
+  const conclusion2 =
+    `El Top 3 representa ${pctTop3} del total de suministros en requerimientos.`;
 %>
 
 <div class="slide">
@@ -642,7 +651,10 @@
 
     <div class="bottom-text-wrap">
       <div class="bottom-title">Suministros usados en requerimientos</div>
-      <div class="bottom-text"><%= bottomMessage %></div>
+      <div class="bottom-text">
+        <p><%= conclusion1 %></p>
+        <p><%= conclusion2 %></p>
+      </div>
     </div>
 
     <div class="watermark">↗</div>
