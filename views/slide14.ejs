@@ -447,8 +447,13 @@
   const top2Cantidad = processedItems.slice(0, 2).reduce((a, b) => a + b.cantidad, 0);
   const top3Cantidad = processedItems.slice(0, 3).reduce((a, b) => a + b.cantidad, 0);
 
-  const pctTop2 = typeof pctTop2 !== 'undefined' ? pctTop2 : pct(top2Cantidad, totalReq);
-  const pctTop3 = typeof pctTop3 !== 'undefined' ? pctTop3 : pct(top3Cantidad, totalReq);
+  const pctTop2Valor = typeof porcentajeTop2 !== 'undefined'
+    ? porcentajeTop2
+    : pct(top2Cantidad, totalReq);
+
+  const pctTop3Valor = typeof porcentajeTop3 !== 'undefined'
+    ? porcentajeTop3
+    : pct(top3Cantidad, totalReq);
 
   const maxCantRaw = Math.max(...processedItems.map(i => i.cantidad), 1);
   const maxCant = Math.ceil(maxCantRaw / 10) * 10;
@@ -467,7 +472,7 @@
       : `La mayor incidencia se concentra en ${top1.nombre}.`;
 
   const conclusion2 =
-    `El Top 3 representa ${pctTop3} del total de requerimientos del periodo.`;
+    `El Top 3 representa ${pctTop3Valor} del total de requerimientos del periodo.`;
 %>
 
 <div class="slide">
@@ -520,7 +525,7 @@
       <div class="kpi-icon bg-teal">2</div>
       <div>
         <div class="kpi-label">Top 2 Participación</div>
-        <div class="kpi-value teal"><%= pctTop2 %></div>
+        <div class="kpi-value teal"><%= pctTop2Valor %></div>
       </div>
     </div>
 
@@ -528,7 +533,7 @@
       <div class="kpi-icon bg-blue">3</div>
       <div>
         <div class="kpi-label">Top 3 Participación</div>
-        <div class="kpi-value"><%= pctTop3 %></div>
+        <div class="kpi-value"><%= pctTop3Valor %></div>
       </div>
     </div>
   </div>
