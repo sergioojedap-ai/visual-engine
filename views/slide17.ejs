@@ -2,19 +2,11 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Slide 17 - Suministros General</title>
+  <title>Slide 17 - Top Suministros General</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-    body {
-      background: #eef4fb;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; }
+    body { background: #eef4fb; }
 
     .slide {
       width: 1600px;
@@ -68,11 +60,7 @@
       padding-right: 360px;
     }
 
-    .title-wrap {
-      display: flex;
-      align-items: flex-start;
-      gap: 18px;
-    }
+    .title-wrap { display: flex; align-items: flex-start; gap: 18px; }
 
     .title-bar {
       width: 13px;
@@ -111,6 +99,7 @@
       align-items: center;
       gap: 12px;
       padding: 12px 14px;
+      overflow: hidden;
     }
 
     .kpi-icon {
@@ -126,21 +115,10 @@
       box-shadow: 0 9px 15px rgba(0,0,0,0.17);
     }
 
-    .bg-blue {
-      background: linear-gradient(135deg, #1264df, #06339b);
-    }
-
-    .bg-teal {
-      background: linear-gradient(135deg, #1ac4c6, #087a87);
-    }
-
-    .bg-orange {
-      background: linear-gradient(135deg, #ffb51d, #ff5f00);
-    }
-
-    .bg-purple {
-      background: linear-gradient(135deg, #9542e8, #5520aa);
-    }
+    .bg-blue { background: linear-gradient(135deg, #1264df, #06339b); }
+    .bg-teal { background: linear-gradient(135deg, #1ac4c6, #087a87); }
+    .bg-orange { background: linear-gradient(135deg, #ffb51d, #ff5f00); }
+    .bg-purple { background: linear-gradient(135deg, #9542e8, #5520aa); }
 
     .kpi-label {
       font-size: 13px;
@@ -159,23 +137,18 @@
     }
 
     .kpi-sub {
-      font-size: 11px;
+      font-size: 9.8px;
       font-weight: 900;
       color: #222;
       margin-top: 4px;
+      line-height: 1.08;
+      white-space: normal;
+      word-break: normal;
     }
 
-    .teal {
-      color: #0a8a96;
-    }
-
-    .orange {
-      color: #ff6200;
-    }
-
-    .purple {
-      color: #7a35d7;
-    }
+    .teal { color: #0a8a96; }
+    .orange { color: #ff6200; }
+    .purple { color: #7a35d7; }
 
     .main-grid {
       position: relative;
@@ -227,46 +200,31 @@
       box-shadow: 0 5px 12px rgba(0,0,0,0.18);
     }
 
-    .chart-box {
-      height: 422px;
-      padding: 12px 20px 6px 20px;
-    }
+    .chart-box { height: 422px; padding: 12px 20px 6px 20px; }
+    .table-box { height: 422px; padding: 12px 16px 8px 16px; }
 
-    .table-box {
-      height: 422px;
-      padding: 12px 16px 8px 16px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12.5px;
-    }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 
     th {
       background: #0d3298;
       color: white;
-      padding: 8px 7px;
+      padding: 8px 6px;
       text-transform: uppercase;
-      font-size: 12.5px;
+      font-size: 12px;
       border: 1px solid #c7d4e8;
     }
 
     td {
-      padding: 7px 7px;
+      padding: 6px 6px;
       border: 1px solid #c7d4e8;
       color: #111;
-      font-size: 12.5px;
+      font-size: 11.6px;
       font-weight: 700;
+      vertical-align: middle;
     }
 
-    tr:nth-child(even) td {
-      background: #eaf1fa;
-    }
-
-    tr:nth-child(odd) td {
-      background: #f7fbff;
-    }
+    tr:nth-child(even) td { background: #eaf1fa; }
+    tr:nth-child(odd) td { background: #f7fbff; }
 
     .rank {
       background: #0d3298 !important;
@@ -276,9 +234,15 @@
       width: 34px;
     }
 
-    .center {
-      text-align: center;
+    .name-cell {
+      font-size: 10.4px;
+      line-height: 1.12;
+      white-space: normal;
+      word-break: normal;
+      overflow-wrap: break-word;
     }
+
+    .center { text-align: center; }
 
     .total-row td {
       background: #ff6900 !important;
@@ -336,9 +300,7 @@
       max-width: 1050px;
     }
 
-    .bottom-text p {
-      margin-bottom: 3px;
-    }
+    .bottom-text p { margin-bottom: 3px; }
 
     .watermark {
       font-size: 78px;
@@ -348,41 +310,12 @@
       padding-right: 4px;
     }
 
-    .axis-label {
-      fill: #08245c;
-      font-size: 13px;
-      font-weight: 900;
-    }
-
-    .axis-title {
-      fill: #08245c;
-      font-size: 15px;
-      font-weight: 900;
-    }
-
-    .bar-label {
-      fill: #08245c;
-      font-size: 13px;
-      font-weight: 900;
-    }
-
-    .line-label {
-      fill: #08245c;
-      font-size: 12px;
-      font-weight: 900;
-    }
-
-    .x-label {
-      fill: #08245c;
-      font-size: 10.5px;
-      font-weight: 800;
-    }
-
-    .legend-text {
-      fill: #08245c;
-      font-size: 14px;
-      font-weight: 900;
-    }
+    .axis-label { fill: #08245c; font-size: 13px; font-weight: 900; }
+    .axis-title { fill: #08245c; font-size: 15px; font-weight: 900; }
+    .bar-label { fill: #08245c; font-size: 13px; font-weight: 900; }
+    .line-label { fill: #08245c; font-size: 12px; font-weight: 900; }
+    .x-label { fill: #08245c; font-size: 8.6px; font-weight: 800; }
+    .legend-text { fill: #08245c; font-size: 14px; font-weight: 900; }
   </style>
 </head>
 
@@ -405,37 +338,52 @@
     return ((num(v) / num(t)) * 100).toFixed(2) + '%';
   }
 
-  function cortar(txt, n) {
-    txt = String(txt || '');
-    return txt.length > n ? txt.substring(0, n - 3) + '...' : txt;
+  function dividirTextoSvg(txt, maxCaracteres) {
+    txt = String(txt || '').trim();
+    if (!txt) return [''];
+
+    const palabras = txt.split(/\s+/);
+    const lineas = [];
+    let actual = '';
+
+    palabras.forEach(palabra => {
+      const prueba = actual ? actual + ' ' + palabra : palabra;
+
+      if (prueba.length <= maxCaracteres) {
+        actual = prueba;
+      } else {
+        if (actual) lineas.push(actual);
+        actual = palabra;
+      }
+    });
+
+    if (actual) lineas.push(actual);
+    return lineas;
   }
 
-  const processedItems = rawItems.slice(0, 10).map(item => ({
-    nombre: item.nombre || item.suministro || item.insumo || '',
-    unidad: item.unidad || item.unidadMaterial || 'UN',
-    cantidad: num(item.cantidad),
-    porcentaje: item.porcentaje || ''
-  }));
-
-  const total = num(
+  const totalSum = num(
     typeof totalSuministrosGeneral !== 'undefined'
       ? totalSuministrosGeneral
       : typeof totalSuministros !== 'undefined'
         ? totalSuministros
-        : processedItems.reduce((a, b) => a + b.cantidad, 0)
+        : rawItems.reduce((a, b) => a + num(b.cantidad), 0)
   );
+
+  const processedItems = rawItems.slice(0, 10).map(item => ({
+    nombre: item.nombre || item.descripcion || item.insumo || item.suministro || '',
+    cantidad: num(item.cantidad),
+    porcentaje: item.porcentaje || pct(item.cantidad, totalSum)
+  }));
 
   let acumulado = 0;
 
   processedItems.forEach(item => {
-    item.porcentaje = item.porcentaje || pct(item.cantidad, total);
     acumulado += item.cantidad;
-    item.pctAcumulado = total ? (acumulado / total) * 100 : 0;
+    item.pctAcumulado = totalSum ? (acumulado / totalSum) * 100 : 0;
   });
 
   const top1 = processedItems[0] || {
     nombre: '-',
-    unidad: '-',
     cantidad: 0,
     porcentaje: '0.00%',
     pctAcumulado: 0
@@ -444,8 +392,13 @@
   const top2Cantidad = processedItems.slice(0, 2).reduce((a, b) => a + b.cantidad, 0);
   const top3Cantidad = processedItems.slice(0, 3).reduce((a, b) => a + b.cantidad, 0);
 
-  const pctTop2 = pct(top2Cantidad, total);
-  const pctTop3 = pct(top3Cantidad, total);
+  const pctTop2Valor = typeof porcentajeTop2 !== 'undefined'
+    ? porcentajeTop2
+    : pct(top2Cantidad, totalSum);
+
+  const pctTop3Valor = typeof porcentajeTop3 !== 'undefined'
+    ? porcentajeTop3
+    : pct(top3Cantidad, totalSum);
 
   const maxCantRaw = Math.max(...processedItems.map(i => i.cantidad), 1);
   const maxCant = Math.ceil(maxCantRaw / 10) * 10;
@@ -464,7 +417,7 @@
       : `El suministro de mayor uso general corresponde a ${top1.nombre}.`;
 
   const conclusion2 =
-    `El Top 3 representa ${pctTop3} del total general de suministros utilizados.`;
+    `El Top 3 representa ${pctTop3Valor} del total general de suministros utilizados.`;
 %>
 
 <div class="slide">
@@ -483,15 +436,15 @@
     <div class="kpi-card">
       <div class="kpi-icon bg-blue">▦</div>
       <div>
-        <div class="kpi-label">Total Suministros General</div>
-        <div class="kpi-value"><%= total %></div>
+        <div class="kpi-label">Total Suministros</div>
+        <div class="kpi-value"><%= totalSum %></div>
       </div>
     </div>
 
     <div class="kpi-card">
       <div class="kpi-icon bg-teal">#</div>
       <div>
-        <div class="kpi-label">Categorías Top</div>
+        <div class="kpi-label">Cantidad de Ítems</div>
         <div class="kpi-value teal"><%= processedItems.length %></div>
       </div>
     </div>
@@ -501,14 +454,14 @@
       <div>
         <div class="kpi-label">Principal Suministro</div>
         <div class="kpi-value orange"><%= top1.cantidad %></div>
-        <div class="kpi-sub"><%= cortar(top1.nombre, 20) %></div>
+        <div class="kpi-sub"><%= top1.nombre %></div>
       </div>
     </div>
 
     <div class="kpi-card">
       <div class="kpi-icon bg-purple">%</div>
       <div>
-        <div class="kpi-label">% Principal Suministro</div>
+        <div class="kpi-label">% Principal</div>
         <div class="kpi-value purple"><%= top1.porcentaje %></div>
       </div>
     </div>
@@ -517,7 +470,7 @@
       <div class="kpi-icon bg-teal">2</div>
       <div>
         <div class="kpi-label">Top 2 Participación</div>
-        <div class="kpi-value teal"><%= pctTop2 %></div>
+        <div class="kpi-value teal"><%= pctTop2Valor %></div>
       </div>
     </div>
 
@@ -525,7 +478,7 @@
       <div class="kpi-icon bg-blue">3</div>
       <div>
         <div class="kpi-label">Top 3 Participación</div>
-        <div class="kpi-value"><%= pctTop3 %></div>
+        <div class="kpi-value"><%= pctTop3Valor %></div>
       </div>
     </div>
   </div>
@@ -553,9 +506,9 @@
           <text x="190" y="24" class="legend-text">Cantidad (Suministros)</text>
           <rect x="158" y="12" width="24" height="14" fill="#1248bf"></rect>
 
-          <line x1="440" y1="19" x2="490" y2="19" stroke="#ff6200" stroke-width="4"></line>
-          <circle cx="465" cy="19" r="6" fill="#ff6200"></circle>
-          <text x="505" y="24" class="legend-text">% Acumulado</text>
+          <line x1="470" y1="19" x2="520" y2="19" stroke="#ff6200" stroke-width="4"></line>
+          <circle cx="495" cy="19" r="6" fill="#ff6200"></circle>
+          <text x="535" y="24" class="legend-text">% Acumulado</text>
 
           <% let linePoints = []; %>
 
@@ -564,9 +517,9 @@
             const barH = maxCant ? (item.cantidad / maxCant) * chartH : 0;
             const y = baseY - barH;
             const x = xCenter - barW / 2;
-
             const pctY = baseY - (item.pctAcumulado / 100) * chartH;
             linePoints.push(`${xCenter},${pctY}`);
+            const lineasNombre = dividirTextoSvg(item.nombre, 14);
           %>
             <rect x="<%= x %>" y="<%= y %>" width="<%= barW %>" height="<%= barH %>" rx="3" fill="#1248bf"></rect>
 
@@ -574,8 +527,10 @@
               <%= item.cantidad %>
             </text>
 
-            <text x="<%= xCenter %>" y="336" text-anchor="middle" class="x-label">
-              <%= cortar(item.nombre, 13) %>
+            <text x="<%= xCenter %>" y="314" text-anchor="middle" class="x-label">
+              <% lineasNombre.forEach((linea, idx) => { %>
+                <tspan x="<%= xCenter %>" dy="<%= idx === 0 ? 0 : 10 %>"><%= linea %></tspan>
+              <% }) %>
             </text>
           <% }) %>
 
@@ -609,18 +564,17 @@
     <div class="panel">
       <div class="panel-title">
         <div class="panel-icon">▤</div>
-        Detalle Suministros General
+        Detalle Top 10 Suministros
       </div>
 
       <div class="table-box">
         <table>
           <thead>
             <tr>
-              <th>#</th>
+              <th style="width: 40px;">#</th>
               <th>Suministro</th>
-              <th>Unidad</th>
-              <th>Cantidad</th>
-              <th>%</th>
+              <th style="width: 105px;">Cantidad</th>
+              <th style="width: 90px;">%</th>
             </tr>
           </thead>
 
@@ -628,8 +582,7 @@
             <% processedItems.forEach((item, i) => { %>
               <tr>
                 <td class="rank"><%= i + 1 %></td>
-                <td><%= cortar(item.nombre, 25) %></td>
-                <td class="center" style="color:#008b96;"><%= item.unidad %></td>
+                <td class="name-cell"><%= item.nombre %></td>
                 <td class="center"><%= item.cantidad %></td>
                 <td class="center"><%= item.porcentaje %></td>
               </tr>
@@ -637,8 +590,7 @@
 
             <tr class="total-row">
               <td colspan="2">TOTAL GENERAL</td>
-              <td class="center">-</td>
-              <td class="center"><%= total %></td>
+              <td class="center"><%= totalSum %></td>
               <td class="center">100.00%</td>
             </tr>
           </tbody>
